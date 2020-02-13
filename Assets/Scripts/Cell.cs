@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
+    enum Status
+    {
+        FLAGGED,
+        CLICKED,
+        HIDDEN
+    }
+
+    public bool isMine;
+    int surroundingArea;
+
     // Start is called before the first frame update
     void Start()
     {
