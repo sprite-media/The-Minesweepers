@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 422564541401598490}
   - component: {fileID: 1129615848563455645}
   m_Layer: 0
-  m_Name: Quad
+  m_Name: Cell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: bbdf4683f35d4b9479c573d3f13b34ad, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
