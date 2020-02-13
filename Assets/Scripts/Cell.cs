@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-    enum Status
+    public enum Status
     {
         FLAGGED,
         CLICKED,
@@ -12,17 +12,14 @@ public class Cell : MonoBehaviour
     }
 
     public bool isMine;
-    int surroundingArea;
+    public int surroundingArea = -1;
+    public Status checkStatus { get; private set; }
+    public Vector2 index { get; private set; }
 
-    // Start is called before the first frame update
-    void Start()
+    public void SetIndex(Vector2 v)
     {
-        
+        index = v;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }
