@@ -19,8 +19,8 @@ public class GameManager : MonoBehaviour
 
 		player = new GameObject().AddComponent<Player>();
 		players = new Dictionary<string, Player>();
-		players.Add("testID", player);//player will always be at index 0
-		//TODO add network players
+		players.Add("testID", player);
+		//TODO Add network players
 	}
 
 	private void GivePermission(string id)
@@ -29,6 +29,6 @@ public class GameManager : MonoBehaviour
 	}
 	public void NotifyTurnEnd()
 	{
-
+		//TODO Tell server turn end
 	}
 }

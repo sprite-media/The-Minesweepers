@@ -49,6 +49,7 @@ public class Player : MonoBehaviour
 				if (pressed == hitCell)
 				{
 					//Call function based on mouseButton
+					//TODO notify game manager (selected cell and action) game manager will tell the server and the server will give the result
 					FinishTurn();
 				}
 			}
