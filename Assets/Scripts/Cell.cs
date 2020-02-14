@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public enum Status
     {
-        
+        FLAGGED,
+        CLICKED,
+        HIDDEN
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool isMine;
+    public int surroundingArea = -1;
+    public Status checkStatus { get; private set; }
+    public Vector2 index { get; private set; }
+
+    public void SetIndex(Vector2 v)
     {
-        
+        index = v;
     }
+
+    
 }
