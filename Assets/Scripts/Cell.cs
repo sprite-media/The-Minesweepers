@@ -38,6 +38,7 @@ public class Cell : MonoBehaviour
             if (surroundingArea == 0)
             {
                 Debug.Log("Area");
+                transform.GetChild(0).gameObject.SetActive(false);
                 GridManager.instance.RevealAreaAt(index);
             }
             return true;
