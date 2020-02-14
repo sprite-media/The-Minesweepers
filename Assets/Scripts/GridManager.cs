@@ -9,8 +9,6 @@ using UnityEngine;
     4. Check if it's a mine cell
  */
 
-
-
 public class GridManager : MonoBehaviour
 {
     public enum Difficulty
@@ -20,17 +18,17 @@ public class GridManager : MonoBehaviour
         EXPERT
     }
 
+    private Cell[,] grid;
+    private GameObject cellPrefab;
 
-    Cell[,] grid;
-    public GameObject cellPrefab;
-
-    int width;
-    int height;
-    int numOfMines;
     public Difficulty difficulty;
+    //Determined by difficulty
+    private int width;
+    private int height;
+    private int numOfMines;
 
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         cellPrefab = Resources.Load("Cell", typeof(GameObject)) as GameObject;
         
@@ -44,29 +42,20 @@ public class GridManager : MonoBehaviour
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
                 grid[i, j].transform.GetChild(0).GetComponent<TextMesh>().text = grid[i, j].surroundingArea.ToString() + ", " + grid[i,j].isMine.ToString();
-        Camera.main.transform.position = new Vector3(width / 2f, height / 2f, -50);
-    
+        Camera.main.transform.position = new Vector3(width / 2f, height / 2f, -10);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
-    void CheckTheSurroundingCells(Cell checkCell)
+    private void CheckTheSurroundingCells(Cell checkCell)
     {
         if(!checkCell.isMine)
-        {
-            
+        { 
             for(int i = (int)checkCell.index.x - 1; i <= checkCell.index.x + 1; i++)
             {
                 for(int j = (int)checkCell.index.y - 1; j <= checkCell.index.y + 1; j++)
                 {
                     if (i < 0 || i > width - 1 || j < 0 || j > height - 1)
                     {
-                        Debug.Log(i + " " + j + "OFB");
+                        //Debug.Log(i + " " + j + "OFB");
 
                         continue;
                     }
@@ -79,8 +68,7 @@ public class GridManager : MonoBehaviour
     
     }
 
-
-    void SetDifficulty()
+    private void SetDifficulty()
     {
         switch (difficulty)
         {
@@ -99,11 +87,10 @@ public class GridManager : MonoBehaviour
                 width = 20;
                 height = 20;
                 break;
-
         }
     }
 
-    void SetGrid()
+    private void SetGrid()
     {
         grid = new Cell[width, height];
         for (int i = 0; i < width; i++)
@@ -117,7 +104,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    void SetMines()
+    private void SetMines()
     {
         for (int i = 0; i < numOfMines; i++)
         {
@@ -131,7 +118,7 @@ public class GridManager : MonoBehaviour
             while (grid[randomPosX, randomPosY].isMine);
 
             grid[randomPosX, randomPosY].isMine = true;
-            Debug.Log(randomPosX + " " + randomPosY + ": This is a mine");
+            Debug.Log(randomPosX + ", " + randomPosY + ": This is a mine");
         }
     }
 }
