@@ -22,7 +22,7 @@ public class GridManager : MonoBehaviour
 
     private Cell[,] grid;
     private GameObject cellPrefab;
-    public List<Texture2D> cellTextures;
+    public List<Texture2D> cellTextures { get; private set; }
 
     public Difficulty difficulty;
     //Determined by difficulty
@@ -45,7 +45,7 @@ public class GridManager : MonoBehaviour
         cellTextures = new List<Texture2D>();
         for (int i = 0; i < (int)Cell.Status.COONT; i++)
         {
-
+            cellTextures.Add(Resources.Load("Textures/" + ((Cell.Status)i).ToString(), typeof(Texture2D)) as Texture2D);
         }
         SetDifficulty();
         SetGrid();
@@ -56,7 +56,7 @@ public class GridManager : MonoBehaviour
 
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
-                grid[i, j].transform.GetChild(0).GetComponent<TextMesh>().text = grid[i, j].surroundingArea.ToString() + ", " + grid[i,j].isMine.ToString();
+                grid[i, j].transform.GetChild(0).GetComponent<TextMesh>().text = grid[i, j].index.x.ToString() + ", " + grid[i, j].index.y.ToString()+ "\n" + grid[i, j].surroundingArea.ToString() + ", " + grid[i,j].isMine.ToString();
         Camera.main.transform.position = new Vector3(width / 2f, height / 2f, -10);
     }
 
@@ -155,18 +155,20 @@ public class GridManager : MonoBehaviour
     }
     public void RevealAreaAt(int x, int y)
     {
+        Debug.Log(x);
+        Debug.Log(y);
         for (int i = x - 1; i <= x + 1; i++)
         {
             for (int j = y - 1; j <= y + 1; j++)
             {
-                if (i == x && j == y)
+                if (i < 0 || i > width - 1 || j < 0 || j > height - 1 || (i == x && j == y))
                     continue;
-                grid[i, j].Reveal();
+                grid[i, j].Clicked();
             }
         }
     }
     public void RevealAreaAt(Vector2Int index)
     {
-        RevealAreaAt(index.x, index.x);
+        RevealAreaAt(index.x, index.y);
     }
 }

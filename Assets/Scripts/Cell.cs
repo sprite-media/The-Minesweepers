@@ -20,15 +20,26 @@ public class Cell : MonoBehaviour
     private void Awake()
     {
         checkStatus = Status.HIDDEN;
+        ChangeTexture();
     }
 
+    private void ChangeTexture()
+    {
+        GetComponent<Renderer>().material.mainTexture = GridManager.instance.cellTextures[(int)checkStatus];
+    }
     public bool Clicked()
     {
         if (checkStatus == Status.HIDDEN)
         {
+            Debug.Log("Clicked" + index);
             checkStatus = Status.CLICKED;
-            Debug.Log("Clicked");
-            Reveal();
+            ChangeTexture();
+            //TODO show text
+            if (surroundingArea == 0)
+            {
+                Debug.Log("Area");
+                GridManager.instance.RevealAreaAt(index);
+            }
             return true;
         }
         return false;
@@ -38,21 +49,17 @@ public class Cell : MonoBehaviour
         if (checkStatus == Status.HIDDEN)
         {
             checkStatus = Status.FLAGGED;
-            //TODO change texture to make it flagged
+            ChangeTexture();
             return true;
         }
-        return false;
-    }
-    public void Reveal()
-    {
-        Debug.Log("Reveal");
-        //TODO change texture to make it looks like it's revealed
-        //TODO show text
-        if (surroundingArea == 0)
+        else if (checkStatus == Status.FLAGGED)
         {
-            Debug.Log("Area");
-            GridManager.instance.RevealAreaAt(index);
+            checkStatus = Status.HIDDEN;
+            ChangeTexture();
+            return true;
         }
+        
+        return false;
     }
     public void SetIndex(Vector2Int v)
     {
