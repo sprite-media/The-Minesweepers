@@ -7,8 +7,8 @@ public class GameManager : MonoBehaviour
 {
 	public static GameManager instance { get; private set; }
 	//will be used for other players
-	Dictionary<string, Player> players;
-	Player player;//own player
+	private Dictionary<string, Player> players;
+	public Player player { get; private set; }//own player
 
 	private void Awake()
 	{
@@ -23,9 +23,26 @@ public class GameManager : MonoBehaviour
 		//TODO Add network players
 	}
 
+	private void Start()
+	{
+		GivePermission("testID");
+	}
+
 	private void GivePermission(string id)
 	{
-		players[id].Turn();
+		players[id].Turn(true);
+	}
+	public void ClickRequest(Vector2Int index)
+	{
+		//TODO tell server click on grid[index]
+		//player.Turn(!GridManager.instance.ClickAt(index));
+		player.Turn(GridManager.instance.ClickAt(index));
+	}
+	public void FlagRequest(Vector2Int index)
+	{
+		//TODO tell server flag on grid[index]
+		//player.Turn(!GridManager.instance.FlagAt(index));
+		player.Turn(GridManager.instance.FlagAt(index));
 	}
 	public void NotifyTurnEnd()
 	{

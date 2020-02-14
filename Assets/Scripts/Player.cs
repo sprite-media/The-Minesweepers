@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
 	private void Update()
 	{
 		//Player can affect the grid only when it's his turn
-		if (!turn)
+		if (!turn || this != GameManager.instance.player)
 			return;
 
 		RaycastHit hit;
@@ -48,21 +48,26 @@ public class Player : MonoBehaviour
 			{
 				if (pressed == hitCell)
 				{
-					//Call function based on mouseButton
-					//TODO notify game manager (selected cell and action) game manager will tell the server and the server will give the result
-					FinishTurn();
+					Debug.Log("Mouse");
+					switch (mouseButton)
+					{
+						case 0:
+							GameManager.instance.ClickRequest(hitCell.index);
+							break;
+						case 1:
+							GameManager.instance.FlagRequest(hitCell.index);
+							break;
+						default:
+							Debug.Log("Nothing happens");
+							break;
+					}
 				}
 			}
 			pressed = null;
 		}
 	}
-	public void Turn()
+	public void Turn(bool t)
 	{
-		turn = true;
-	}
-	private void FinishTurn()
-	{
-		turn = false;
-		GameManager.instance.NotifyTurnEnd();
+		turn = t;
 	}
 }

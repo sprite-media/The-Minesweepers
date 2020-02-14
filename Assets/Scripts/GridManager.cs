@@ -18,8 +18,11 @@ public class GridManager : MonoBehaviour
         EXPERT
     }
 
+    public static GridManager instance;
+
     private Cell[,] grid;
     private GameObject cellPrefab;
+    public List<Texture2D> cellTextures;
 
     public Difficulty difficulty;
     //Determined by difficulty
@@ -30,8 +33,20 @@ public class GridManager : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
         cellPrefab = Resources.Load("Cell", typeof(GameObject)) as GameObject;
-        
+        cellTextures = new List<Texture2D>();
+        for (int i = 0; i < (int)Cell.Status.COONT; i++)
+        {
+
+        }
         SetDifficulty();
         SetGrid();
         SetMines();
@@ -98,7 +113,7 @@ public class GridManager : MonoBehaviour
             for (int j = 0; j < height; j++)
             {
                 grid[i, j] = Instantiate(cellPrefab, new Vector3(i, j, 0), cellPrefab.transform.rotation).GetComponent<Cell>();
-                grid[i, j].SetIndex(new Vector2(i, j));
+                grid[i, j].SetIndex(new Vector2Int(i, j));
                 grid[i, j].isMine = false;
             }
         }
@@ -120,5 +135,38 @@ public class GridManager : MonoBehaviour
             grid[randomPosX, randomPosY].isMine = true;
             Debug.Log(randomPosX + ", " + randomPosY + ": This is a mine");
         }
+    }
+
+    public bool ClickAt(int x, int y)
+    {
+        return grid[x, y].Clicked();
+    }
+    public bool ClickAt(Vector2Int index)
+    {
+        return ClickAt(index.x, index.y);
+    }
+    public bool FlagAt(int x, int y)
+    {
+        return grid[x, y].Flagged();
+    }
+    public bool FlagAt(Vector2Int index)
+    {
+        return FlagAt(index.x, index.y);
+    }
+    public void RevealAreaAt(int x, int y)
+    {
+        for (int i = x - 1; i <= x + 1; i++)
+        {
+            for (int j = y - 1; j <= y + 1; j++)
+            {
+                if (i == x && j == y)
+                    continue;
+                grid[i, j].Reveal();
+            }
+        }
+    }
+    public void RevealAreaAt(Vector2Int index)
+    {
+        RevealAreaAt(index.x, index.x);
     }
 }
