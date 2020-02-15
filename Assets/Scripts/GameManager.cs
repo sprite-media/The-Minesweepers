@@ -36,13 +36,15 @@ public class GameManager : MonoBehaviour
 	{
 		//TODO tell server click on grid[index]
 		//player.Turn(!GridManager.instance.ClickAt(index));
-		player.Turn(GridManager.instance.ClickAt(index));
+		GridManager.instance.ClickAt(index);
+		player.Turn(true);
 	}
 	public void FlagRequest(Vector2Int index)
 	{
 		//TODO tell server flag on grid[index]
 		//player.Turn(!GridManager.instance.FlagAt(index));
-		player.Turn(GridManager.instance.FlagAt(index));
+		GridManager.instance.FlagAt(index);
+		player.Turn(true);
 	}
 	public void NotifyTurnEnd()
 	{
