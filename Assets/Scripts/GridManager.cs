@@ -20,9 +20,9 @@ public class GridManager : MonoBehaviour
     }
 
     public static GridManager instance;
-    private delegate void ForAllCell(int x, int y);
+    private delegate void ForAllCell(int x, int y); //Delegate to pass function that controlls cell
     private Cell[,] grid;
-    private GameObject cellPrefab;
+    private GameObject cellPrefab;//Original prefab. Once it's assigned, it should not be modified.
     public List<Texture2D> cellTextures { get; private set; }
     //public Color[] textColors;
 
@@ -44,6 +44,7 @@ public class GridManager : MonoBehaviour
             Destroy(this);
         }
 
+        //Loading from Resources folder during runtime
         cellPrefab = Resources.Load("Cell", typeof(GameObject)) as GameObject;
         cellTextures = new List<Texture2D>();
         for (int i = 0; i < (int)Cell.Status.COONT; i++)
@@ -59,6 +60,7 @@ public class GridManager : MonoBehaviour
         Camera.main.transform.position = new Vector3(width / 2f, height / 2f, -10);
     }
 
+    //Loops through all the cells and do something with the cell
     private void ForEachCell(ForAllCell func)
     {
         for (int i = 0; i < width; i++)
@@ -93,8 +95,12 @@ public class GridManager : MonoBehaviour
     }
     private void SetGrid()
     {
+        //Initialize grid and create actual game object
         grid = new Cell[width, height];
-        ForEachCell((i, j) => {
+
+        //Running ForEachCell function passing C# lambda expression
+        ForEachCell((i, j) => 
+        {
             grid[i, j] = Instantiate(cellPrefab, new Vector3(i, j, 0), cellPrefab.transform.rotation).GetComponent<Cell>();
             grid[i, j].SetIndex(new Vector2Int(i, j));
             grid[i, j].isMine = false;
@@ -140,6 +146,11 @@ public class GridManager : MonoBehaviour
         checkCell.SetText(checkCell.surroundingArea.ToString());
     }
 
+    /*
+    GridManager is the only function that has access to the cells.
+    Other classes don't have any reference to the cells(grid)
+    These functions will be called by GameManager which is triggered by Player class.
+    //*/
     public bool ClickAt(int x, int y)
     {
         return grid[x, y].Clicked();
@@ -158,6 +169,8 @@ public class GridManager : MonoBehaviour
         return FlagAt(index.x, index.y);
     }
 
+    //This function is called in cell's Reveal function.
+    //Cell class can't affect other cells so a cell calls this function to reveal other cells
     public void RevealAreaAt(int x, int y)
     {
         Debug.Log(x);

@@ -24,8 +24,8 @@ public class Player : MonoBehaviour
 		if (Physics.Raycast(ray, out hit, 1000))
 		{
 			Debug.DrawRay(ray.origin, ray.direction * 1000, Color.green);
-			SelectCell(0, hit);
-			SelectCell(1, hit);
+			SelectCell(0, hit);//left click
+			SelectCell(1, hit);//right click
 		}
 		else
 		{
@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
 		}
 	}
 
+	//Cursor should be on the same cell when mouse is clicked and released
 	private void SelectCell(int mouseButton, RaycastHit hit)
 	{
 		if (Input.GetMouseButtonDown(mouseButton))
@@ -49,6 +50,8 @@ public class Player : MonoBehaviour
 				if (pressed == hitCell)
 				{
 					Debug.Log("Mouse");
+					//Player doesn't interact with grid directly.
+					//It passes the cell index to GameManager for future extension(Server)
 					switch (mouseButton)
 					{
 						case 0:

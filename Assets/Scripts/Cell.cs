@@ -5,6 +5,8 @@ using TMPro;
 
 public class Cell : MonoBehaviour
 {
+    //Number of Status enum contents and number of textures should match
+    //Name should match too
     public enum Status
     {
         HIDDEN = 0,
@@ -81,6 +83,9 @@ public class Cell : MonoBehaviour
     {
         index = v;
     }
+
+    //Text is set when the number surrounding mines is calculated which only happens during initialization.
+    //Therefore it hides the text right after setting the text
     public void SetText(string msg)
     {
         text.text = msg;
