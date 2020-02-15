@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 /* Managing the grid objects, 
     1. Making the grid
@@ -19,10 +20,11 @@ public class GridManager : MonoBehaviour
     }
 
     public static GridManager instance;
-
+    private delegate void ForAllCell(int x, int y);
     private Cell[,] grid;
     private GameObject cellPrefab;
     public List<Texture2D> cellTextures { get; private set; }
+    //public Color[] textColors;
 
     public Difficulty difficulty;
     //Determined by difficulty
@@ -41,46 +43,31 @@ public class GridManager : MonoBehaviour
         {
             Destroy(this);
         }
+
         cellPrefab = Resources.Load("Cell", typeof(GameObject)) as GameObject;
         cellTextures = new List<Texture2D>();
         for (int i = 0; i < (int)Cell.Status.COONT; i++)
         {
             cellTextures.Add(Resources.Load("Textures/" + ((Cell.Status)i).ToString(), typeof(Texture2D)) as Texture2D);
         }
+
         SetDifficulty();
         SetGrid();
         SetMines();
-        for (int i = 0; i < width; i++)
-            for (int j = 0; j < height; j++)
-                CheckTheSurroundingCells(grid[i, j]);
+        ForEachCell(CheckTheSurroundingCells);
 
-        for (int i = 0; i < width; i++)
-            for (int j = 0; j < height; j++)
-                grid[i, j].transform.GetChild(0).GetComponent<TextMesh>().text = grid[i, j].index.x.ToString() + ", " + grid[i, j].index.y.ToString()+ "\n" + grid[i, j].surroundingArea.ToString() + ", " + grid[i,j].isMine.ToString();
         Camera.main.transform.position = new Vector3(width / 2f, height / 2f, -10);
     }
 
-    private void CheckTheSurroundingCells(Cell checkCell)
+    private void ForEachCell(ForAllCell func)
     {
-        if(!checkCell.isMine)
-        { 
-            for(int i = (int)checkCell.index.x - 1; i <= checkCell.index.x + 1; i++)
-            {
-                for(int j = (int)checkCell.index.y - 1; j <= checkCell.index.y + 1; j++)
-                {
-                    if (i < 0 || i > width - 1 || j < 0 || j > height - 1)
-                    {
-                        //Debug.Log(i + " " + j + "OFB");
-
-                        continue;
-                    }
-                        
-                    if (grid[i, j].isMine)
-                        checkCell.surroundingArea++;
-                }
-            }
-        }
-    
+        for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++)
+                func(i, j);
+    }
+    private bool WithinBoundary(int x, int y)
+    {
+        return !(x < 0 || x > width - 1 || y < 0 || y > height - 1);
     }
 
     private void SetDifficulty()
@@ -104,21 +91,15 @@ public class GridManager : MonoBehaviour
                 break;
         }
     }
-
     private void SetGrid()
     {
         grid = new Cell[width, height];
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                grid[i, j] = Instantiate(cellPrefab, new Vector3(i, j, 0), cellPrefab.transform.rotation).GetComponent<Cell>();
-                grid[i, j].SetIndex(new Vector2Int(i, j));
-                grid[i, j].isMine = false;
-            }
-        }
+        ForEachCell((i, j) => {
+            grid[i, j] = Instantiate(cellPrefab, new Vector3(i, j, 0), cellPrefab.transform.rotation).GetComponent<Cell>();
+            grid[i, j].SetIndex(new Vector2Int(i, j));
+            grid[i, j].isMine = false;
+        });
     }
-
     private void SetMines()
     {
         for (int i = 0; i < numOfMines; i++)
@@ -137,6 +118,28 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    private void CheckTheSurroundingCells(int x, int y)
+    {
+        CheckTheSurroundingCells(grid[x, y]);
+    }
+    private void CheckTheSurroundingCells(Cell checkCell)
+    {
+        if (!checkCell.isMine)
+        {
+            for (int i = (int)checkCell.index.x - 1; i <= checkCell.index.x + 1; i++)
+            {
+                for (int j = (int)checkCell.index.y - 1; j <= checkCell.index.y + 1; j++)
+                {
+                    if (WithinBoundary(i, j) && grid[i, j].isMine)
+                    {
+                        checkCell.surroundingArea++;
+                    }
+                }
+            }
+        }
+        checkCell.SetText(checkCell.surroundingArea.ToString());
+    }
+
     public bool ClickAt(int x, int y)
     {
         return grid[x, y].Clicked();
@@ -145,6 +148,7 @@ public class GridManager : MonoBehaviour
     {
         return ClickAt(index.x, index.y);
     }
+
     public bool FlagAt(int x, int y)
     {
         return grid[x, y].Flagged();
@@ -153,6 +157,7 @@ public class GridManager : MonoBehaviour
     {
         return FlagAt(index.x, index.y);
     }
+
     public void RevealAreaAt(int x, int y)
     {
         Debug.Log(x);
