@@ -56,8 +56,6 @@ public class GridManager : MonoBehaviour
         SetGrid();
         SetMines();
         ForEachCell(CheckTheSurroundingCells);
-
-        Camera.main.transform.position = new Vector3(width / 2f, height / 2f, -10);
     }
 
     //Loops through all the cells and do something with the cell
@@ -92,6 +90,7 @@ public class GridManager : MonoBehaviour
                 height = 20;
                 break;
         }
+        CameraView.AdjustCameraPosition(width, height);
     }
     private void SetGrid()
     {

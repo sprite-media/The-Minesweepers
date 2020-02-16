@@ -882,7 +882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2777e73ec0942e34eae8a7e57a3b0a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
+  difficulty: 2
 --- !u!4 &448330771
 Transform:
   m_ObjectHideFlags: 0
@@ -2219,9 +2219,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0
-    width: 1
-    height: 1
+    y: 0.03
+    width: 0.75
+    height: 0.75
   near clip plane: 0.3
   far clip plane: 100
   field of view: 60
