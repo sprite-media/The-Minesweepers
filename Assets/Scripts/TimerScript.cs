@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 public class TimerScript : MonoBehaviour
 {
-    public Text TimerText;
+    public Text timerText;
 
     void Start()
     {
@@ -10,7 +10,7 @@ public class TimerScript : MonoBehaviour
     }
     void Update()
     {
-        TimerText.text = "00:00";
+        timerText.text = "00:00";
         //TimerText.text = Time.ToString();
     }
 }
