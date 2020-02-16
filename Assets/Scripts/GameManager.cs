@@ -32,17 +32,22 @@ public class GameManager : MonoBehaviour
 	{
 		players[id].Turn(true);
 	}
+
+//Receives cell index from the player (and communicate with server)-> future extension
+//Will pass the cell index to the server and will receive result from the server then it can change the player turn after
 	public void ClickRequest(Vector2Int index)
 	{
 		//TODO tell server click on grid[index]
 		//player.Turn(!GridManager.instance.ClickAt(index));
-		player.Turn(GridManager.instance.ClickAt(index));
+		GridManager.instance.ClickAt(index);
+		player.Turn(true);
 	}
 	public void FlagRequest(Vector2Int index)
 	{
 		//TODO tell server flag on grid[index]
 		//player.Turn(!GridManager.instance.FlagAt(index));
-		player.Turn(GridManager.instance.FlagAt(index));
+		GridManager.instance.FlagAt(index);
+		player.Turn(true);
 	}
 	public void NotifyTurnEnd()
 	{
