@@ -26,11 +26,15 @@ public class GridManager : MonoBehaviour
     public List<Texture2D> cellTextures { get; private set; }
     //public Color[] textColors;
 
+    public bool isLose = false;
+    public bool isWin = false;
+
     public Difficulty difficulty;
     //Determined by difficulty
     private int width;
     private int height;
     private int numOfMines;
+    private int numOfHiddenOrFlag;
 
     // Start is called before the first frame update
     private void Awake()
@@ -78,6 +82,7 @@ public class GridManager : MonoBehaviour
                 numOfMines = 10;
                 width = 10;
                 height = 10;
+                
                 break;
             case Difficulty.INTERMEDIATE:
                 numOfMines = 40;
@@ -152,6 +157,12 @@ public class GridManager : MonoBehaviour
     //*/
     public bool ClickAt(int x, int y)
     {
+
+        if (grid[x, y].isMine && grid[x,y].checkStatus != Cell.Status.FLAGGED)
+        {
+            isLose = true;
+        }
+
         return grid[x, y].Clicked();
     }
     public bool ClickAt(Vector2Int index)
@@ -188,4 +199,23 @@ public class GridManager : MonoBehaviour
     {
         RevealAreaAt(index.x, index.y);
     }
+
+    public void CheckGrid() 
+    {
+        int numOfHiddenOrFlag = 0;
+        ForEachCell((i, j) =>
+        {
+            if (grid[i, j].checkStatus == Cell.Status.HIDDEN || grid[i, j].checkStatus == Cell.Status.FLAGGED)
+            {
+                numOfHiddenOrFlag++;
+                Debug.Log(numOfHiddenOrFlag);
+            }
+        });
+        if (numOfHiddenOrFlag == numOfMines)
+        {
+            Debug.Log("WIN");
+            isWin = true;
+        }       
+    }
+
 }
