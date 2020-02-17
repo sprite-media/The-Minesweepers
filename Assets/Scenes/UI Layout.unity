@@ -911,7 +911,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLose: 0
   isWin: 0
-  difficulty: 2
+  difficulty: 0
 --- !u!4 &448330771
 Transform:
   m_ObjectHideFlags: 0
@@ -3677,6 +3677,7 @@ GameObject:
   - component: {fileID: 2078264244}
   - component: {fileID: 2078264246}
   - component: {fileID: 2078264245}
+  - component: {fileID: 2078264247}
   m_Layer: 5
   m_Name: MineCounter
   m_TagString: Untagged
@@ -3821,6 +3822,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2078264243}
   m_CullTransparentMesh: 0
+--- !u!114 &2078264247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078264243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a1bd04d8b4e0234091cca4909d34032, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mineCounterText: {fileID: 2078264245}
 --- !u!1 &2100250178
 GameObject:
   m_ObjectHideFlags: 0
