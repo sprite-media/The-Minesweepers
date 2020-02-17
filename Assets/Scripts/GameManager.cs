@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 		//TODO Add network players
 	}
 
+	
 	private void Start()
 	{
 		GivePermission("testID");

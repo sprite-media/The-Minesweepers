@@ -25,10 +25,8 @@ public class GridManager : MonoBehaviour
     private GameObject cellPrefab;//Original prefab. Once it's assigned, it should not be modified.
     public List<Texture2D> cellTextures { get; private set; }
     //public Color[] textColors;
-
     public bool isLose = false;
     public bool isWin = false;
-
     public Difficulty difficulty;
     //Determined by difficulty
     private int width;
@@ -157,12 +155,10 @@ public class GridManager : MonoBehaviour
     //*/
     public bool ClickAt(int x, int y)
     {
-
         if (grid[x, y].isMine && grid[x,y].checkStatus != Cell.Status.FLAGGED)
         {
             isLose = true;
         }
-
         return grid[x, y].Clicked();
     }
     public bool ClickAt(Vector2Int index)
