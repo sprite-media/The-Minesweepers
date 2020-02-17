@@ -20,14 +20,16 @@ public class WinLoseUIScript : MonoBehaviour
         // set the WinLoseCamera to active when player clicked on the mine
         if (GridManager.instance.isLose)
         {
-            //Time.timeScale = 0f;
+            GameManager.instance.player.Turn(false);
+            Time.timeScale = 0.0f;
             GameOverText.SetActive(true);
             WinText.SetActive(false);
             WinLoseUI.SetActive(true);
         }
         if(GridManager.instance.isWin)
         {
-            //Time.timeScale = 0f;
+            GameManager.instance.player.Turn(false);
+            Time.timeScale = 0.0f;
             GameOverText.SetActive(false);
             WinText.SetActive(true);
             WinLoseUI.SetActive(true);
