@@ -31,7 +31,7 @@ public class GridManager : MonoBehaviour
     //Determined by difficulty
     private int width;
     private int height;
-    private int numOfMines;
+    public int numOfMines { get; private set; }
     private int numOfHiddenOrFlag;
 
     // Start is called before the first frame update

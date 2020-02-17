@@ -63,14 +63,17 @@ public class Cell : MonoBehaviour
     }
     public bool Flagged()
     {
+        //TODO mine number should be managed my grid manager
         if (checkStatus == Status.HIDDEN)
         {
             checkStatus = Status.FLAGGED;
+            MineCounterScript.instance.DecreaseMineNum();
             goto Clickable;
         }
         else if (checkStatus == Status.FLAGGED)
         {
             checkStatus = Status.HIDDEN;
+            MineCounterScript.instance.IncreaseMineNum();
             goto Clickable;
         }
         return false;
