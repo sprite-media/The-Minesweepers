@@ -207,9 +207,11 @@ public class GridManager : MonoBehaviour
                 Debug.Log(numOfHiddenOrFlag);
             }
         });
-        if(numOfHiddenOrFlag == numOfMines)
+        if (numOfHiddenOrFlag == numOfMines)
+        {
+            Debug.Log("WIN");
             isWin = true;
-        
+        }       
     }
 
 }

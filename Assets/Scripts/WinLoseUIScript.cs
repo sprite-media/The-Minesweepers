@@ -25,12 +25,12 @@ public class WinLoseUIScript : MonoBehaviour
             WinText.SetActive(false);
             WinLoseUI.SetActive(true);
         }
-        else if(GridManager.instance.isWin)
+        if(GridManager.instance.isWin)
         {
             //Time.timeScale = 0f;
-            GameOverText.SetActive(true);
+            GameOverText.SetActive(false);
             WinText.SetActive(true);
-            WinLoseUI.SetActive(false);
+            WinLoseUI.SetActive(true);
         }
 
     }
