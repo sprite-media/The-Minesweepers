@@ -22,7 +22,6 @@ public class Cell : MonoBehaviour
     public Vector2Int index { get; private set; }
     private TextMeshPro text;
 
-
     private void Awake()
     {
         checkStatus = Status.HIDDEN;
