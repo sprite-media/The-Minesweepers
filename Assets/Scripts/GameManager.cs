@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
 		//player.Turn(!GridManager.instance.ClickAt(index));
 		GridManager.instance.ClickAt(index);
 		player.Turn(true);
+		GridManager.instance.CheckGrid();
 	}
 	public void FlagRequest(Vector2Int index)
 	{
@@ -49,6 +50,7 @@ public class GameManager : MonoBehaviour
 		//player.Turn(!GridManager.instance.FlagAt(index));
 		GridManager.instance.FlagAt(index);
 		player.Turn(true);
+		GridManager.instance.CheckGrid();
 	}
 	public void NotifyTurnEnd()
 	{

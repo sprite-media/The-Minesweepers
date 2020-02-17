@@ -26,6 +26,7 @@ public class GridManager : MonoBehaviour
     public List<Texture2D> cellTextures { get; private set; }
     //public Color[] textColors;
     public bool isLose = false;
+    public bool isWin = false;
     public Difficulty difficulty;
     //Determined by difficulty
     private int width;
@@ -152,7 +153,7 @@ public class GridManager : MonoBehaviour
     //*/
     public bool ClickAt(int x, int y)
     {
-        if (grid[x, y].isMine)
+        if (grid[x, y].isMine && grid[x,y].checkStatus != Cell.Status.FLAGGED)
         {
             isLose = true;
         }
@@ -193,5 +194,18 @@ public class GridManager : MonoBehaviour
         RevealAreaAt(index.x, index.y);
     }
 
+    public void CheckGrid() 
+    {
+        ForEachCell((i, j) =>
+        {
+            if (grid[i, j].checkStatus == Cell.Status.HIDDEN)
+            {
+                Debug.Log("Not yet");
+                return;
+            }
+            
+        });
+        isWin = true;
+    }
 
 }
