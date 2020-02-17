@@ -32,6 +32,7 @@ public class GridManager : MonoBehaviour
     private int width;
     private int height;
     private int numOfMines;
+    private int numOfHiddenOrFlag;
 
     // Start is called before the first frame update
     private void Awake()
@@ -79,6 +80,7 @@ public class GridManager : MonoBehaviour
                 numOfMines = 10;
                 width = 10;
                 height = 10;
+                
                 break;
             case Difficulty.INTERMEDIATE:
                 numOfMines = 40;
@@ -196,16 +198,18 @@ public class GridManager : MonoBehaviour
 
     public void CheckGrid() 
     {
+        int numOfHiddenOrFlag = 0;
         ForEachCell((i, j) =>
         {
-            if (grid[i, j].checkStatus == Cell.Status.HIDDEN)
+            if (grid[i, j].checkStatus == Cell.Status.HIDDEN || grid[i, j].checkStatus == Cell.Status.FLAGGED)
             {
-                Debug.Log("Not yet");
-                return;
+                numOfHiddenOrFlag++;
+                Debug.Log(numOfHiddenOrFlag);
             }
-            
         });
-        isWin = true;
+        if(numOfHiddenOrFlag == numOfMines)
+            isWin = true;
+        
     }
 
 }
