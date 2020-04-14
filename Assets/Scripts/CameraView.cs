@@ -7,6 +7,6 @@ public static class CameraView
 		Camera cam = Camera.main;
 		cam.orthographicSize = height / 2.0f;
 
-		cam.transform.position = new Vector3((width / 2.0f) - 0.5f, (height/2.0f) - 0.5f, -10);
+		cam.transform.position = new Vector3((width / 2.0f) - 0.5f, (height / 2.0f) - 0.5f, -10);
 	}
 }
