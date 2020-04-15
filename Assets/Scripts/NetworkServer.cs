@@ -110,6 +110,7 @@ public class NetworkServer : MonoBehaviour
 
 		if (m_Connections.Length == 2)
 		{
+			StartGame();
 			NotifyTurn(0);
 		}
 	}
@@ -157,6 +158,11 @@ public class NetworkServer : MonoBehaviour
 		{
 			SendData(data, c);
 		}
+	}
+
+	public void StartGame()
+	{
+		SendData(new StartInfo());
 	}
 
 	public void NotifyTurn(int playerIndex)

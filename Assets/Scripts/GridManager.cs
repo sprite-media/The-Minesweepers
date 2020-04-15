@@ -104,6 +104,7 @@ public class GridManager : MonoBehaviour
 		ForEachCell((i, j) =>
 		{
 			grid[i, j] = Instantiate(cellPrefab, new Vector3(i, j, 0), cellPrefab.transform.rotation).GetComponent<Cell>();
+			grid[i, j].transform.parent = transform;
 			grid[i, j].SetIndex(new Vector2Int(i, j));
 			grid[i, j].isMine = false;
 		});
@@ -122,7 +123,7 @@ public class GridManager : MonoBehaviour
 			while (grid[randomPosX, randomPosY].isMine);
 
 			grid[randomPosX, randomPosY].isMine = true;
-			Debug.Log(randomPosX + ", " + randomPosY + ": This is a mine");
+			//Debug.Log(randomPosX + ", " + randomPosY + ": This is a mine");
 		}
 	}
 
@@ -179,8 +180,6 @@ public class GridManager : MonoBehaviour
 	//Cell class can't affect other cells so a cell calls this function to reveal other cells
 	public void RevealAreaAt(int x, int y)
 	{
-		Debug.Log(x);
-		Debug.Log(y);
 		for (int i = x - 1; i <= x + 1; i++)
 		{
 			for (int j = y - 1; j <= y + 1; j++)

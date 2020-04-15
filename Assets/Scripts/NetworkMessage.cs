@@ -6,6 +6,7 @@ namespace NetworkMessage
 	public enum Command
 	{
 		Connect,
+		Start,
 		Drop,
 		Click,
 		Turn,
@@ -18,6 +19,15 @@ namespace NetworkMessage
 	public class NetworkHeader
 	{
 		public Command cmd;
+	}
+
+	[Serializable]
+	public class StartInfo : NetworkHeader
+	{
+		public StartInfo()
+		{
+			cmd = Command.Start;
+		}
 	}
 
 	[Serializable]

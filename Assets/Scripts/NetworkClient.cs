@@ -82,6 +82,10 @@ public class NetworkClient : MonoBehaviour
 		{
 			switch (header.cmd)
 			{
+				case Command.Start:
+					StartInfo startInfo = JsonUtility.FromJson<StartInfo>(returnData);
+					GameManager.instance.CreatePlayer();
+					break;
 				case Command.Connect:
 					ConnectInfo connectInfo = JsonUtility.FromJson<ConnectInfo>(returnData);
 					ID = connectInfo.playerID;
@@ -93,7 +97,7 @@ public class NetworkClient : MonoBehaviour
 					break;
 				case Command.Turn:
 					Turn turn = JsonUtility.FromJson<Turn>(returnData);
-					//TODO change turn
+					GameManager.instance.Turn(turn.playerID == ID);
 					break;
 				case Command.Result:
 					Result result = JsonUtility.FromJson<Result>(returnData);

@@ -33,11 +33,11 @@ public class Cell : MonoBehaviour
 	{
 		GetComponent<Renderer>().material.mainTexture = GridManager.instance.cellTextures[(int)checkStatus];
 	}
-	public bool Clicked()
+	public bool Clicked() //Try to reveal the cell and return whether it was valid click or not
 	{
 		if (checkStatus == Status.HIDDEN)
 		{
-			Debug.Log("Clicked" + index);
+			//Debug.Log("Clicked" + index);
 			checkStatus = Status.CLICKED;
 
 			text.gameObject.SetActive(true);
@@ -52,7 +52,7 @@ public class Cell : MonoBehaviour
 				}
 				else
 				{
-					Debug.Log("Area");
+					//Debug.Log("Area");
 					GridManager.instance.RevealAreaAt(index);
 				}
 			}
@@ -61,7 +61,7 @@ public class Cell : MonoBehaviour
 		}
 		return false;
 	}
-	public bool Flagged()
+	public bool Flagged() //Try to put/remove falg on the cell and return whether it was valid click or not
 	{
 		//TODO mine number should be managed my grid manager
 		if (checkStatus == Status.HIDDEN)
