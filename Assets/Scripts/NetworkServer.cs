@@ -43,12 +43,14 @@ public class NetworkServer : MonoBehaviour
 	private void Update()
 	{
 		m_Driver.ScheduleUpdate().Complete();
+		CleanupConnection();
+
 		timer += Time.deltaTime;
 
 		NetworkConnection c;
 		while ((c = m_Driver.Accept()) != default(NetworkConnection))
 		{
-			OnConnect();
+			OnConnect(c);
 		}
 
 		DataStreamReader stream;
@@ -68,22 +70,48 @@ public class NetworkServer : MonoBehaviour
 				}
 				else if (cmd == NetworkEvent.Type.Disconnect)
 				{
-					SendData(new DropInfo());
+					Debug.Log("DROP");
 					m_Connections[i] = default(NetworkConnection);
-					continue;
+					SendData(new DropInfo());
+					break;
 				}
 
 				cmd = m_Driver.PopEventForConnection(m_Connections[i], out stream);
 			}
 		}
 	}
+	public void OnDestroy()
+	{
+		m_Driver.Dispose();
+		m_Connections.Dispose();
+	}
 
-	private void OnConnect()
+	private void CleanupConnection()
+	{
+		for (int i = 0; i < m_Connections.Length; i++)
+		{
+			if (!m_Connections[i].IsCreated)
+			{
+				m_Connections.RemoveAtSwapBack(i);
+				--i;
+			}
+		}
+	}
+
+	private void OnConnect(NetworkConnection c)
 	{
 		if (m_Connections.Length >= 2)
 			return;
 
-		//TODO Check if number of player is 2 and start turn
+		ConnectInfo connectInfo = new ConnectInfo();
+		connectInfo.playerID = c.InternalId;
+		SendData(connectInfo, c);
+		m_Connections.Add(c);
+
+		if (m_Connections.Length == 2)
+		{
+			NotifyTurn(0);
+		}
 	}
 
 	private void OnData(DataStreamReader stream, int connectionIndex)
@@ -108,7 +136,7 @@ public class NetworkServer : MonoBehaviour
 
 	private void SendData(object data, NetworkConnection c)
 	{
-		if (c == default(NetworkConnection))
+		if ((c == default(NetworkConnection)) || !c.IsCreated)
 		{
 			/*/
             Assert.IsTrue(true);

@@ -55,6 +55,10 @@ public class NetworkClient : MonoBehaviour
 			}
 		}
 	}
+	public void OnDestroy()
+	{
+		m_Driver.Dispose();
+	}
 
 	private void OnData(DataStreamReader stream)
 	{
@@ -79,21 +83,28 @@ public class NetworkClient : MonoBehaviour
 			switch (header.cmd)
 			{
 				case Command.Connect:
-					//TODO Receive id and ready
+					ConnectInfo connectInfo = JsonUtility.FromJson<ConnectInfo>(returnData);
+					ID = connectInfo.playerID;
+					Debug.Log(ID);
 					break;
 				case Command.Drop:
+					DropInfo dropInfo = JsonUtility.FromJson<DropInfo>(returnData);
 					//TODO Game end
 					break;
 				case Command.Turn:
+					Turn turn = JsonUtility.FromJson<Turn>(returnData);
 					//TODO change turn
 					break;
 				case Command.Result:
+					Result result = JsonUtility.FromJson<Result>(returnData);
 					//TODO Send result to local(client side) grid manager and reflect the result(visually)
 					break;
 				case Command.Timer:
+					Timer timer = JsonUtility.FromJson<Timer>(returnData);
 					//TODO send server timer to timer script
 					break;
 				case Command.Chat:
+					Chat chat = JsonUtility.FromJson<Chat>(returnData);
 					//TODO send chat message to chat script
 					break;
 				default:
