@@ -127,7 +127,29 @@ public class NetworkServer : MonoBehaviour
 		{
 			case Command.Click:
 			{
-				//TODO receive indices and GridManager.instance.ClickAt( received ) then send result
+				Click click = JsonUtility.FromJson<Click>(returnData);
+				bool invalidClick = false;
+				switch (click.mouse)
+				{
+					case 0:
+						//TODO collect result
+						invalidClick = !GridManager.instance.ClickAt(click.index);
+						break;
+					case 1:
+						//TODO collect result
+						invalidClick = !GridManager.instance.FlagAt(click.index);
+						break;
+					default:
+						Debug.Log("Nothing happens");
+						break;
+				}
+
+				SendResult();
+
+				if (!invalidClick)
+					NotifyTurn(((connectionIndex + 1) % 2));
+				else
+					NotifyTurn(connectionIndex);
 			}
 			break;
 			default:

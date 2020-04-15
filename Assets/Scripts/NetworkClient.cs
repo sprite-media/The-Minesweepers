@@ -129,4 +129,17 @@ public class NetworkClient : MonoBehaviour
 		Debug.Log("Disconnecting");
 		m_Connection.Disconnect(m_Driver);
 	}
+
+	private void SendData(object data)
+	{
+		var writer = m_Driver.BeginSend(m_Connection);
+		NativeArray<byte> sendBytes = new NativeArray<byte>(Encoding.ASCII.GetBytes(JsonUtility.ToJson(data)), Allocator.Temp);
+		writer.WriteBytes(sendBytes);
+		m_Driver.EndSend(writer);
+	}
+	public void SendInput(Vector2Int index, int mouse)
+	{
+		Click click = new Click(index, mouse);
+		SendData(click);
+	}
 }

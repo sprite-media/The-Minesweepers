@@ -52,15 +52,18 @@ namespace NetworkMessage
 	[Serializable]
 	public class Click : NetworkHeader//From player
 	{
+		public int mouse;
 		public Vector2Int index;//x y index of grid
 
-		public Click()
+		public Click(Vector2Int i, int m)
 		{
 			cmd = Command.Click;
+			index = i;
+			mouse = m;
 		}
 		public override string ToString()
 		{
-			return "NetworkInput : " + index.ToString();
+			return "NetworkInput : " + index.ToString() + ", mouse : " + mouse.ToString();
 		}
 	}
 

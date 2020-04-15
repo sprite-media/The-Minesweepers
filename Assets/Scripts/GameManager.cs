@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 	//Will pass the cell index to the server and will receive result from the server then it can change the player turn after
 	public void ClickRequest(Vector2Int index)
 	{
+		NetworkClient.instance.SendInput(index, 0);
 		Turn(false);
 		//TODO tell server click on grid[index]
 		//TODO at server side GridManager.instance.ClickAt(index);
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
 	}
 	public void FlagRequest(Vector2Int index)
 	{
+		NetworkClient.instance.SendInput(index, 1);
 		Turn(false);
 		//TODO tell server flag on grid[index]
 		//TODO at server side GridManager.instance.FlagAt(index);
