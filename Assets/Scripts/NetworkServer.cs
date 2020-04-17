@@ -128,25 +128,26 @@ public class NetworkServer : MonoBehaviour
 			case Command.Click:
 			{
 				Click click = JsonUtility.FromJson<Click>(returnData);
-				bool invalidClick = false;
+				bool validClick = false;
+				Result result = new Result();
 				switch (click.mouse)
 				{
 					case 0:
 						//TODO collect result
-						invalidClick = !GridManager.instance.ClickAt(click.index);
+						validClick = GridManager.instance.ClickAt(click.index, ref result);
 						break;
 					case 1:
 						//TODO collect result
-						invalidClick = !GridManager.instance.FlagAt(click.index);
+						validClick = GridManager.instance.FlagAt(click.index, ref result);
 						break;
 					default:
 						Debug.Log("Nothing happens");
 						break;
 				}
 
-				SendResult();
+				SendResult(result);
 
-				if (!invalidClick)
+				if (validClick)
 					NotifyTurn(((connectionIndex + 1) % 2));
 				else
 					NotifyTurn(connectionIndex);
@@ -200,8 +201,8 @@ public class NetworkServer : MonoBehaviour
 		timer.timer = instance.timer;
 		SendData(timer);
 	}
-	public void SendResult()//TODO receive result data(must be collection type)
+	public void SendResult(Result result)
 	{
-
+		SendData(result);
 	}
 }

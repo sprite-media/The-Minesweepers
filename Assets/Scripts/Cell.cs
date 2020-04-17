@@ -22,28 +22,24 @@ public class Cell : MonoBehaviour
 	public Vector2Int index { get; private set; }
 	private TextMeshPro text;
 
-
 	private void Awake()
 	{
 		checkStatus = Status.HIDDEN;
 		text = transform.GetChild(0).GetComponent<TextMeshPro>();
+		text.gameObject.SetActive(false);
 		ChangeTexture();
 	}
 	private void ChangeTexture()
 	{
 		GetComponent<Renderer>().material.mainTexture = GridManager.instance.cellTextures[(int)checkStatus];
 	}
-	public bool Clicked() //Try to reveal the cell and return whether it was valid click or not
+	public bool Clicked(ref NetworkMessage.Result result) //Try to reveal the cell and return whether it was valid click or not
 	{
 		if (checkStatus == Status.HIDDEN)
 		{
-			//Debug.Log("Clicked" + index);
 			checkStatus = Status.CLICKED;
-
-			text.gameObject.SetActive(true);
 			if (surroundingArea == 0)
 			{
-				text.gameObject.SetActive(false);
 				if (isMine)
 				{
 					//Game over
@@ -53,46 +49,76 @@ public class Cell : MonoBehaviour
 				else
 				{
 					//Debug.Log("Area");
-					GridManager.instance.RevealAreaAt(index);
+					GridManager.instance.RevealAreaAt(index, ref result);
 				}
 			}
-			ChangeTexture();
+			NetworkMessage.CellResult cr = new NetworkMessage.CellResult();
+			cr.index = index;
+			cr.status = checkStatus;
+			cr.surrounding = surroundingArea;
+			result.result.Add(cr);
 			return true;
 		}
 		return false;
 	}
-	public bool Flagged() //Try to put/remove falg on the cell and return whether it was valid click or not
+	public bool Flagged(ref NetworkMessage.Result result) //Try to put/remove falg on the cell and return whether it was valid click or not
 	{
 		//TODO mine number should be managed my grid manager
 		if (checkStatus == Status.HIDDEN)
 		{
 			checkStatus = Status.FLAGGED;
-			MineCounterScript.instance.DecreaseMineNum();
 			goto Clickable;
 		}
 		else if (checkStatus == Status.FLAGGED)
 		{
 			checkStatus = Status.HIDDEN;
-			MineCounterScript.instance.IncreaseMineNum();
 			goto Clickable;
 		}
 		return false;
 
 		Clickable:
-			ChangeTexture();
-			return true;
+		NetworkMessage.CellResult cr = new NetworkMessage.CellResult();
+		cr.index = index;
+		cr.status = checkStatus;
+		result.result.Add(cr);
+		return true;
 
 	}
 	public void SetIndex(Vector2Int v)
 	{
 		index = v;
 	}
+	public void Reflect(NetworkMessage.CellResult cr)
+	{
+		checkStatus = cr.status;
+		ChangeTexture();
+		switch (checkStatus)
+		{
+			case Status.HIDDEN:
+				MineCounterScript.instance.IncreaseMineNum();
+				break;
+			case Status.CLICKED:
+			{
+				SetText(cr.surrounding.ToString());
+				text.gameObject.SetActive(true);
+				if (cr.surrounding == 0)
+					text.gameObject.SetActive(false);
+			}
+				break;
+			case Status.FLAGGED:
+				MineCounterScript.instance.DecreaseMineNum();
+				break;
+			case Status.MINE:
+				GridManager.instance.isLose = true;
+				return;
+			default:
+				break;
+		}
+	}
 
-	//Text is set when the number surrounding mines is calculated which only happens during initialization.
-	//Therefore it hides the text right after setting the text
+	//Text is set when the number surrounding mines is received from the server.
 	public void SetText(string msg)
 	{
 		text.text = msg;
-		text.gameObject.SetActive(false);
 	}
 }

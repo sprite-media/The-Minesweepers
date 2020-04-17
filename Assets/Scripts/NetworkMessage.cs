@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace NetworkMessage
@@ -83,16 +84,22 @@ namespace NetworkMessage
 		public Vector2Int index;
 		public Cell.Status status;
 		public int surrounding;
+
+		public CellResult()
+		{
+			status = Cell.Status.HIDDEN;
+		}
 	}
 
 	[Serializable]
 	public class Result : NetworkHeader //From server to clients
 	{
-		public CellResult[] result;
+		public List<CellResult> result;
 
 		public Result()
 		{
 			cmd = Command.Result;
+			result = new List<CellResult>();
 		}
 	}
 

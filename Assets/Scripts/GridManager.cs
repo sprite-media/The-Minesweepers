@@ -23,7 +23,7 @@ public class GridManager : MonoBehaviour
 
 //In the editor
 	public Difficulty difficulty;
-	public bool ClientSide;
+	public bool clientSide;
 
 //Resoureces
 	private GameObject cellPrefab;//Original prefab. Once it's assigned, it should not be modified.
@@ -65,8 +65,12 @@ public class GridManager : MonoBehaviour
 
 		SetDifficulty();
 		SetGrid();
-		SetMines();
-		ForEachCell(CheckTheSurroundingCells);
+
+		if (!clientSide)
+		{
+			SetMines();
+			ForEachCell(CheckTheSurroundingCells);
+		}
 	}
 
 	//Loops through all the cells and do something with the cell
@@ -163,31 +167,31 @@ public class GridManager : MonoBehaviour
 	Other classes don't have any reference to the cells(grid)
 	These functions will be called by GameManager which is triggered by Player class.
 	//*/
-	public bool ClickAt(int x, int y)
+	public bool ClickAt(int x, int y, ref NetworkMessage.Result result)
 	{
 		if (grid[x, y].isMine && grid[x, y].checkStatus != Cell.Status.FLAGGED)
 		{
 			isLose = true;
 		}
-		return grid[x, y].Clicked();
+		return grid[x, y].Clicked(ref result);
 	}
-	public bool ClickAt(Vector2Int index)
+	public bool ClickAt(Vector2Int index, ref NetworkMessage.Result result)
 	{
-		return ClickAt(index.x, index.y);
+		return ClickAt(index.x, index.y, ref result);
 	}
 
-	public bool FlagAt(int x, int y)
+	public bool FlagAt(int x, int y, ref NetworkMessage.Result result)
 	{
-		return grid[x, y].Flagged();
+		return grid[x, y].Flagged(ref result);
 	}
-	public bool FlagAt(Vector2Int index)
+	public bool FlagAt(Vector2Int index, ref NetworkMessage.Result result)
 	{
-		return FlagAt(index.x, index.y);
+		return FlagAt(index.x, index.y, ref result);
 	}
 
 	//This function is called in cell's Reveal function.
 	//Cell class can't affect other cells so a cell calls this function to reveal other cells
-	public void RevealAreaAt(int x, int y)
+	public void RevealAreaAt(int x, int y, ref NetworkMessage.Result result)
 	{
 		for (int i = x - 1; i <= x + 1; i++)
 		{
@@ -195,13 +199,13 @@ public class GridManager : MonoBehaviour
 			{
 				if (i < 0 || i > width - 1 || j < 0 || j > height - 1 || (i == x && j == y))
 					continue;
-				grid[i, j].Clicked();
+				grid[i, j].Clicked(ref result);
 			}
 		}
 	}
-	public void RevealAreaAt(Vector2Int index)
+	public void RevealAreaAt(Vector2Int index, ref NetworkMessage.Result result)
 	{
-		RevealAreaAt(index.x, index.y);
+		RevealAreaAt(index.x, index.y, ref result);
 	}
 
 	public void CheckGrid()
@@ -224,6 +228,9 @@ public class GridManager : MonoBehaviour
 
 	public void ReflectResult(NetworkMessage.Result result)
 	{
-
+		foreach (NetworkMessage.CellResult cr in result.result)
+		{
+			grid[cr.index.x, cr.index.y].Reflect(cr);
+		}
 	}
 }
