@@ -78,9 +78,17 @@ namespace NetworkMessage
 	}
 
 	[Serializable]
+	public class CellResult
+	{
+		public Vector2Int index;
+		public Cell.Status status;
+		public int surrounding;
+	}
+
+	[Serializable]
 	public class Result : NetworkHeader //From server to clients
 	{
-		//TODO list of results
+		public CellResult[] result;
 
 		public Result()
 		{

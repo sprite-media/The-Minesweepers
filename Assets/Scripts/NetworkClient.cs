@@ -101,7 +101,7 @@ public class NetworkClient : MonoBehaviour
 					break;
 				case Command.Result:
 					Result result = JsonUtility.FromJson<Result>(returnData);
-					//TODO Send result to local(client side) grid manager and reflect the result(visually)
+					GridManager.instance.ReflectResult(result);
 					break;
 				case Command.Timer:
 					Timer timer = JsonUtility.FromJson<Timer>(returnData);

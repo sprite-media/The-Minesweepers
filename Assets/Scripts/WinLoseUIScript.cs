@@ -8,12 +8,6 @@ public class WinLoseUIScript : MonoBehaviour
 	public GameObject GameOverText;
 	public GameObject WinText;
 
-	// Start is called before the first frame update
-	void Start()
-	{
-
-	}
-
 	// Update is called once per frame
 	void Update()
 	{

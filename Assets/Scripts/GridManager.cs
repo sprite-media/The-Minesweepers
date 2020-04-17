@@ -20,21 +20,30 @@ public class GridManager : MonoBehaviour
 	}
 
 	public static GridManager instance;
-	private delegate void ForAllCell(int x, int y); //Delegate to pass function that controlls cell
-	private Cell[,] grid;
+
+//In the editor
+	public Difficulty difficulty;
+	public bool ClientSide;
+
+//Resoureces
 	private GameObject cellPrefab;//Original prefab. Once it's assigned, it should not be modified.
 	public List<Texture2D> cellTextures { get; private set; }
-	//public Color[] textColors;
+
+	private delegate void ForAllCell(int x, int y); //Delegate to pass function that controlls cell
+
+	private Cell[,] grid;
+	
+	[HideInInspector]
 	public bool isLose = false;
+	[HideInInspector]
 	public bool isWin = false;
-	public Difficulty difficulty;
-	//Determined by difficulty
+
+//Determined by difficulty
 	private int width;
 	private int height;
 	public int numOfMines { get; private set; }
 	private int numOfHiddenOrFlag;
 
-	// Start is called before the first frame update
 	private void Awake()
 	{
 		if (instance == null)
@@ -49,7 +58,7 @@ public class GridManager : MonoBehaviour
 		//Loading from Resources folder during runtime
 		cellPrefab = Resources.Load("Cell", typeof(GameObject)) as GameObject;
 		cellTextures = new List<Texture2D>();
-		for (int i = 0; i < (int)Cell.Status.COONT; i++)
+		for (int i = 0; i < (int)Cell.Status.COUNT; i++)
 		{
 			cellTextures.Add(Resources.Load("Textures/" + ((Cell.Status)i).ToString(), typeof(Texture2D)) as Texture2D);
 		}
@@ -213,4 +222,8 @@ public class GridManager : MonoBehaviour
 		}
 	}
 
+	public void ReflectResult(NetworkMessage.Result result)
+	{
+
+	}
 }

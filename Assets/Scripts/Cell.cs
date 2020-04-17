@@ -13,7 +13,7 @@ public class Cell : MonoBehaviour
 		CLICKED,
 		FLAGGED,
 		MINE,
-		COONT
+		COUNT
 	}
 
 	public bool isMine;
