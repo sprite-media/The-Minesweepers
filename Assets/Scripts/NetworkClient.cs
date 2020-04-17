@@ -33,6 +33,8 @@ public class NetworkClient : MonoBehaviour
 
 		var endpoint = NetworkEndPoint.Parse(IP, Port);
 		m_Connection = m_Driver.Connect(endpoint);
+
+		InvokeRepeating("SendHeartbeat", 1, 1.0f / 60.0f);
 	}
 	private void Update()
 	{
@@ -136,6 +138,10 @@ public class NetworkClient : MonoBehaviour
 		NativeArray<byte> sendBytes = new NativeArray<byte>(Encoding.ASCII.GetBytes(JsonUtility.ToJson(data)), Allocator.Temp);
 		writer.WriteBytes(sendBytes);
 		m_Driver.EndSend(writer);
+	}
+	private void SendHeartbeat()
+	{
+		SendData("heartbeat");
 	}
 	public void SendInput(Vector2Int index, int mouse)
 	{

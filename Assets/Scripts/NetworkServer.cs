@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Unity.Collections;
@@ -68,13 +69,6 @@ public class NetworkServer : MonoBehaviour
 				{
 					OnData(stream, i);
 				}
-				else if (cmd == NetworkEvent.Type.Disconnect)
-				{
-					Debug.Log("DROP");
-					m_Connections[i] = default(NetworkConnection);
-					SendData(new DropInfo());
-					break;
-				}
 
 				cmd = m_Driver.PopEventForConnection(m_Connections[i], out stream);
 			}
@@ -92,6 +86,7 @@ public class NetworkServer : MonoBehaviour
 		{
 			if (!m_Connections[i].IsCreated)
 			{
+				SendData(new DropInfo());
 				m_Connections.RemoveAtSwapBack(i);
 				--i;
 			}
@@ -102,7 +97,7 @@ public class NetworkServer : MonoBehaviour
 	{
 		if (m_Connections.Length >= 2)
 			return;
-
+		Debug.Log("Connect");
 		ConnectInfo connectInfo = new ConnectInfo();
 		connectInfo.playerID = c.InternalId;
 		SendData(connectInfo, c);
@@ -120,6 +115,8 @@ public class NetworkServer : MonoBehaviour
 		NativeArray<byte> bytes = new NativeArray<byte>(stream.Length, Allocator.Temp);
 		stream.ReadBytes(bytes);
 		string returnData = Encoding.ASCII.GetString(bytes.ToArray());
+		if (returnData == "heartbeat")
+			return;
 
 		NetworkHeader header = JsonUtility.FromJson<NetworkHeader>(returnData);
 		 
@@ -127,6 +124,7 @@ public class NetworkServer : MonoBehaviour
 		{
 			case Command.Click:
 			{
+				Debug.Log("Click");
 				Click click = JsonUtility.FromJson<Click>(returnData);
 				bool validClick = false;
 				Result result = new Result();
@@ -144,7 +142,6 @@ public class NetworkServer : MonoBehaviour
 						Debug.Log("Nothing happens");
 						break;
 				}
-
 				SendResult(result);
 
 				if (validClick)
@@ -157,6 +154,20 @@ public class NetworkServer : MonoBehaviour
 				break;
 		}
 	}
+	private void RemoveDuplicates(ref List<CellResult> result)
+	{
+		for (int i = 0; i < result.Count-1; i++)
+		{
+			for (int j = i + 1; j < result.Count; j++)
+			{
+				if (result[i].index == result[j].index)
+				{
+					result.RemoveAt(j);
+					j--;
+				}
+			}
+		}
+	}
 
 	private void SendData(object data, NetworkConnection c)
 	{
@@ -165,15 +176,22 @@ public class NetworkServer : MonoBehaviour
 			/*/
             Assert.IsTrue(true);
             /*/
-			Debug.LogError("Invalid NetworkConnection. Exiting function.");
+			Debug.LogError("Invalid NetworkConnection(" + c +"). Exiting function.");
 			return;
 			//*/
 		}
-		var writer = m_Driver.BeginSend(NetworkPipeline.Null, c);
-		string jsonString = JsonUtility.ToJson(data);
-		NativeArray<byte> sendBytes = new NativeArray<byte>(Encoding.ASCII.GetBytes(jsonString), Allocator.Temp);
-		writer.WriteBytes(sendBytes);
-		m_Driver.EndSend(writer);
+		try
+		{
+			var writer = m_Driver.BeginSend(NetworkPipeline.Null, c);
+			string jsonString = JsonUtility.ToJson(data);
+			NativeArray<byte> sendBytes = new NativeArray<byte>(Encoding.ASCII.GetBytes(jsonString), Allocator.Temp);
+			writer.WriteBytes(sendBytes);
+			m_Driver.EndSend(writer);
+		}
+		catch
+		{
+			Debug.Log(data);
+		}
 	}
 	private void SendData(object data) // Overloaded version of SendData. Sending data to all connections
 	{
@@ -203,6 +221,25 @@ public class NetworkServer : MonoBehaviour
 	}
 	public void SendResult(Result result)
 	{
-		SendData(result);
+		RemoveDuplicates(ref result.result);
+		Debug.Log(result.ToString());
+		List<Result> splitResult = new List<Result>();
+		if (result.result.Count >= 20)
+		{
+			for (int i = 0; i < result.result.Count; i++)
+			{
+				if (i % 20 == 0)
+				{
+					splitResult.Add(new Result());
+				}
+				splitResult[i / 20].result.Add(result.result[i]);
+			}
+			foreach (Result r in splitResult)
+			{
+				SendData(r);
+			}
+		}
+		else
+			SendData(result);
 	}
 }

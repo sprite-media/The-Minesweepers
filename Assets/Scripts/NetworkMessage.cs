@@ -101,6 +101,12 @@ namespace NetworkMessage
 			cmd = Command.Result;
 			result = new List<CellResult>();
 		}
+		public override string ToString()
+		{
+			string toString = "Result : \n";
+			toString += "Lenght : " + result.Count + "\n";
+			return toString;
+		}
 	}
 
 	[Serializable]

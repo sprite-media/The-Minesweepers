@@ -909,9 +909,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2777e73ec0942e34eae8a7e57a3b0a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  difficulty: 0
+  clientSide: 0
   isLose: 0
   isWin: 0
-  difficulty: 0
 --- !u!4 &448330771
 Transform:
   m_ObjectHideFlags: 0
