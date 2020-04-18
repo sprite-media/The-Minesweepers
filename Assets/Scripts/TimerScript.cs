@@ -2,19 +2,23 @@
 using TMPro;
 public class TimerScript : MonoBehaviour
 {
+	public static TimerScript instance { get; private set; }
 	public TextMeshProUGUI timerText;
-	private float time;
 
-	void Start()
+	void Awake()
 	{
-		//Get Time Reference
-		time = 0.0f;
+		if (instance == null)
+		{
+			instance = this;
+		}
+		else
+		{
+			Destroy(this);
+		}
 	}
-	void Update()
+	public void UpdateTimer(float elapsed)
 	{
-		time += Time.deltaTime;
-		timerText.text = FloatToTimeString(time);
-		//TimerText.text = Time.ToString();
+		timerText.text = FloatToTimeString(elapsed);
 	}
 	public static string FloatToTimeString(float t)
 	{
