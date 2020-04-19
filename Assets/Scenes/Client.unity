@@ -1069,8 +1069,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loginBtn: {fileID: 1247747595}
-  signupBtn1: {fileID: 0}
-  signupBtn2: {fileID: 0}
+  signupBtn1: {fileID: 1592571619}
+  signupBtn2: {fileID: 238225383}
   loginText: {fileID: 330097705}
   checkPwInput: {fileID: 188562628}
   checkPwInputField: {fileID: 2008946320}
