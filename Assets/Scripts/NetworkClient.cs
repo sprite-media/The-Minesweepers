@@ -107,11 +107,13 @@ public class NetworkClient : MonoBehaviour
 					break;
 				case Command.Timer:
 					Timer timer = JsonUtility.FromJson<Timer>(returnData);
-					//TODO send server timer to timer script
+					TimerScript.instance.UpdateTimer(timer.timer);
 					break;
 				case Command.Chat:
 					Chat chat = JsonUtility.FromJson<Chat>(returnData);
-					//TODO send chat message to chat script
+					chat.chatMessage = chat.RemoveQuestionMark(chat.chatMessage);
+					Debug.Log("Chat " + chat.chatMessage);
+					ChatScript.instance.AddText(chat.chatMessage);
 					break;
 				default:
 					Debug.Log("Error");
@@ -120,7 +122,7 @@ public class NetworkClient : MonoBehaviour
 		}
 		catch (System.Exception e)
 		{
-			Debug.LogError(e.ToString() + "\nMessage contents loading failed. Disconnecting.");
+			Debug.LogError(e.ToString() + "\nMessage contents loading failed. Disconnecting.\nReturn Data : "+returnData);
 			Disconnect();
 			return;
 		}
@@ -134,6 +136,11 @@ public class NetworkClient : MonoBehaviour
 
 	private void SendData(object data)
 	{
+		if (m_Connection == default(NetworkConnection) || !m_Connection.IsCreated)
+		{
+			Debug.Log("Invalid connection");
+			return;
+		}
 		var writer = m_Driver.BeginSend(m_Connection);
 		NativeArray<byte> sendBytes = new NativeArray<byte>(Encoding.ASCII.GetBytes(JsonUtility.ToJson(data)), Allocator.Temp);
 		writer.WriteBytes(sendBytes);
@@ -147,5 +154,12 @@ public class NetworkClient : MonoBehaviour
 	{
 		Click click = new Click(index, mouse);
 		SendData(click);
+	}
+	public void SendChatting(string chatMessage)
+	{
+		Chat chat = new Chat();
+		chat.chatMessage = chatMessage;
+		Debug.Log("sending : " + chat.chatMessage);
+		SendData(chat);
 	}
 }

@@ -122,11 +122,19 @@ namespace NetworkMessage
 	[Serializable]
 	public class Chat : NetworkHeader //Both way. Works differently on server side and client side
 	{
-		public int playerID;
 		public string chatMessage;
 		public Chat()
 		{
-			cmd = Command.Turn;
+			cmd = Command.Chat;
+		}
+		public string RemoveQuestionMark(string original)
+		{
+			string removed = "";
+			for (int i = 0; i < original.Length-1; i++)
+			{
+				removed += original[i];
+			}
+			return removed;
 		}
 	}
 }
