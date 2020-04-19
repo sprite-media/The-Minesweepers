@@ -150,6 +150,12 @@ public class NetworkServer : MonoBehaviour
 					NotifyTurn(connectionIndex);
 			}
 			break;
+			case Command.Chat:
+				Chat chat = JsonUtility.FromJson<Chat>(returnData);
+				chat.chatMessage = chat.RemoveQuestionMark(chat.chatMessage);
+				Debug.Log("Chat message : " + chat.chatMessage);
+				SendData(chat);
+				break;
 			default:
 				break;
 		}

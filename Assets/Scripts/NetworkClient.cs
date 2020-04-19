@@ -111,7 +111,9 @@ public class NetworkClient : MonoBehaviour
 					break;
 				case Command.Chat:
 					Chat chat = JsonUtility.FromJson<Chat>(returnData);
-					//TODO send chat message to chat script
+					chat.chatMessage = chat.RemoveQuestionMark(chat.chatMessage);
+					Debug.Log("Chat " + chat.chatMessage);
+					ChatScript.instance.AddText(chat.chatMessage);
 					break;
 				default:
 					Debug.Log("Error");
@@ -152,5 +154,12 @@ public class NetworkClient : MonoBehaviour
 	{
 		Click click = new Click(index, mouse);
 		SendData(click);
+	}
+	public void SendChatting(string chatMessage)
+	{
+		Chat chat = new Chat();
+		chat.chatMessage = chatMessage;
+		Debug.Log("sending : " + chat.chatMessage);
+		SendData(chat);
 	}
 }

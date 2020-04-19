@@ -3,20 +3,30 @@ using TMPro;
 
 public class ChatScript : MonoBehaviour
 {
-	public string inputText;
+	public static ChatScript instance;
 	public GameObject inputField;
-	public GameObject display;
+	public Transform content;
+	public GameObject chatObject;
+	private string inputText;
 
-	void Start()
+	void Awake()
 	{
-		//Define which player own this client here 
-
-		display.GetComponent<TextMeshProUGUI>().text = "";
+		if (instance == null)
+			instance = this;
+		else
+			Destroy(this);
 	}
 
 	public void StoreText()
 	{
 		inputText = inputField.GetComponent<TextMeshProUGUI>().text;
-		display.GetComponent<TextMeshProUGUI>().text = inputText;
+		//display.GetComponent<TextMeshProUGUI>().text = inputText;
+		NetworkClient.instance.SendChatting(inputText);
+		inputText = "";
+	}
+	public void AddText(string chatMessage)
+	{
+		TextMeshProUGUI chat = Instantiate(chatObject, content).GetComponent<TextMeshProUGUI>();
+		chat.text = chatMessage;
 	}
 }
