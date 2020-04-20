@@ -233,5 +233,6 @@ public class GridManager : MonoBehaviour
 		{
 			grid[cr.index.x, cr.index.y].Reflect(cr);
 		}
+		CheckGrid();
 	}
 }
