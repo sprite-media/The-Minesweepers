@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-
-public class LogoutScript : MonoBehaviour
+public class ProgressScript : MonoBehaviour
 {
 
-    public static LogoutScript instance { get; private set; }
+    public static ProgressScript instance { get; private set; }
 
+    int progress;
     string userid;
     // Start is called before the first frame update
     void Awake()
@@ -19,23 +19,22 @@ public class LogoutScript : MonoBehaviour
             Destroy(this);
     }
 
-    public void setUserId(string id) { userid = id; }
-    public void Logout()
+    public void setUserid(string id) { userid = id; }
+
+    public void setProgress(int x) { progress += x; }
+
+    public void UpdateProgress()
     {
         StartCoroutine(SentLogoutInfo());
     }
 
-    void OnDestroy()
-    {
-        Logout();
-    }
     IEnumerator SentLogoutInfo()
     {
-        string jsonString = "{\"username\":\"" + userid + "\"}";
+        string jsonString = "{\"username\":\"" + userid + "\",\"progress\":\"" + progress + "\"}";
 
         byte[] myData = System.Text.Encoding.UTF8.GetBytes(jsonString);
 
-        UnityWebRequest www = UnityWebRequest.Put("https://5shq8xfk2f.execute-api.us-east-1.amazonaws.com/default/MinesweeperUserLogout", myData);
+        UnityWebRequest www = UnityWebRequest.Put("https://db5fu151ej.execute-api.us-east-1.amazonaws.com/default/MinesweeperUpdateProgress", myData);
 
         www.SetRequestHeader("Content-Type", "application/json");
 

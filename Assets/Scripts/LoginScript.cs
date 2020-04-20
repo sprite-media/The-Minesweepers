@@ -57,7 +57,7 @@ public class LoginScript : MonoBehaviour
             }
             if (MsgText == "\"Login\"")
             {
-                login = true;
+                ProgressScript.instance.setUserid(idInput);
                 LogoutScript.instance.setUserId(idInput);
                 Debug.Log("Start Game");
                 // Add start game code here
