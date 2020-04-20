@@ -6,19 +6,19 @@ using UnityEngine.Networking;
 
 public class SignUpScript : MonoBehaviour
 {
-    public GameObject loginBtn;
-    public GameObject signupBtn1;
-    public GameObject signupBtn2;
-
-    public GameObject loginText;
-    public GameObject checkPwInput;
+    public GameObject welcomeText;
     public GameObject checkPwInputField;
     public GameObject idInputField;
     public GameObject pwInputField;
+    public GameObject loginUI;
+    public GameObject signupUI;
+    public GameObject MsgUI;
 
     string idInputText;
     string pwInputText;
     string checkPwInputText;
+    string successText;
+    bool signup = false;
 
 
     // Start is called before the first frame update
@@ -29,22 +29,19 @@ public class SignUpScript : MonoBehaviour
 
     public void SignUp()
     {
-    
-        loginBtn.SetActive(false);
-        signupBtn1.SetActive(false);
-        signupBtn2.SetActive(true);
-        loginText.GetComponent<TextMeshProUGUI>().text = "Sign Up";
-        checkPwInput.SetActive(true);
+        loginUI.SetActive(false);
+        signupUI.SetActive(true);
     }
 
     public void NewUser() 
     {
+        Debug.Log("Signupfor user");
         StartCoroutine(SentUserInfo());
     }
     // Update is called once per frame
     void Update()
     {
-        
+    
     }
 
     IEnumerator SentUserInfo()
@@ -52,9 +49,11 @@ public class SignUpScript : MonoBehaviour
         idInputText = idInputField.GetComponent<TextMeshProUGUI>().text;
         pwInputText = pwInputField.GetComponent<TextMeshProUGUI>().text;
         checkPwInputText = checkPwInputField.GetComponent<TextMeshProUGUI>().text;
+        Debug.Log("123");
 
         if (checkPwInputText == pwInputText)
         {
+            Debug.Log("456");
             string jsonString = "{\"username\":\"" + idInputText + "\",\"password\":\"" + pwInputText + "\"}";
 
             byte[] myData = System.Text.Encoding.UTF8.GetBytes(jsonString);
@@ -71,11 +70,29 @@ public class SignUpScript : MonoBehaviour
             }
             else
             {
-                Debug.Log(www.downloadHandler.text);
+                //Debug.Log(www.downloadHandler.text);
+                successText = www.downloadHandler.text;
+                Debug.Log(successText);
+                if (successText == "\"success\"")
+                    Debug.Log("Signup");
+                DisplayWelcomeUI();
             }
-
-
         }
     }
 
+    void DisplayWelcomeUI()
+    {
+        welcomeText.GetComponent<TextMeshProUGUI>().text = "Welcome " + idInputText + " to Minesweeper! \r\n Please login to play!";
+        loginUI.SetActive(false);
+        signupUI.SetActive(false);
+        MsgUI.SetActive(true);
+    }
+
+    public void DisplayLoginUI() 
+    {
+        loginUI.SetActive(true);
+        signupUI.SetActive(false);
+        MsgUI.SetActive(false);
+
+    }
 }

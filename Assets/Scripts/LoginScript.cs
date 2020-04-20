@@ -8,13 +8,16 @@ public class LoginScript : MonoBehaviour
 {
 	public string idInput;
     public string pwInput;
+    public bool login;
+    string MsgText;
 	public GameObject idInputField;
     public GameObject pwInputField;
+    public GameObject OutputText;
 
 	void Start()
 	{
-		//Define which player own this client here 
-
+        //Define which player own this client here 
+        login = false;
 	}
     public void Login()
     {
@@ -42,6 +45,18 @@ public class LoginScript : MonoBehaviour
         else
         {
             Debug.Log(www.downloadHandler.text);
+            MsgText = www.downloadHandler.text;
+            if (MsgText == "\"Invalid password\"" || MsgText == "\"Invalid username\"") 
+            {
+                OutputText.GetComponent<TextMeshProUGUI>().text = MsgText;
+                OutputText.SetActive(true);
+            }
+            if (MsgText == "\"Login\"")
+            {
+                login = true;
+                Debug.Log("Start Game");
+                // Add start game code here
+            }
         }
 
 
