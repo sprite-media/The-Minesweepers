@@ -8,6 +8,7 @@ public class WinLoseUIScript : MonoBehaviour
 	public GameObject WinLoseUI;
 	public GameObject GameOverText;
 	public GameObject WinText;
+	bool doOnce = false;
 
 	void Awake()
 	{
@@ -25,8 +26,13 @@ public class WinLoseUIScript : MonoBehaviour
 			WinText.SetActive(false);
 			GameOverText.transform.parent.gameObject.SetActive(true);
 			WinLoseUI.SetActive(true);
-			ProgressScript.instance.setProgress(-1);
-			ProgressScript.instance.UpdateProgress();
+
+			if (doOnce == false)
+			{
+				ProgressScript.instance.setProgress(-1);
+				ProgressScript.instance.UpdateProgress();
+				doOnce = true;
+			}
 		}
 		if (GridManager.instance.isWin)
 		{
@@ -35,8 +41,12 @@ public class WinLoseUIScript : MonoBehaviour
 			WinText.SetActive(true);
 			WinText.transform.parent.gameObject.SetActive(true);
 			WinLoseUI.SetActive(true);
-			ProgressScript.instance.setProgress(1);
-			ProgressScript.instance.UpdateProgress();
+			if (doOnce == false)
+			{
+				ProgressScript.instance.setProgress(1);
+				ProgressScript.instance.UpdateProgress();
+				doOnce = true;
+			}
 		}
 
 	}
