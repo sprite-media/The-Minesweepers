@@ -44,6 +44,8 @@ public class NetworkClient : MonoBehaviour
 	}
 	private void Update()
 	{
+		if(Input.GetKeyDown(KeyCode.Escape))
+			LogoutScript.instance.Logout();
 		if (!start)
 			return;
 
@@ -68,6 +70,7 @@ public class NetworkClient : MonoBehaviour
 	}
 	public void OnDestroy()
 	{
+		//LogoutScript.instance.Logout();
 		m_Driver.Dispose();
 	}
 

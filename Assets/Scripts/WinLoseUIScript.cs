@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class WinLoseUIScript : MonoBehaviour
 {
 	public GameObject WinLoseUI;
 	public GameObject GameOverText;
 	public GameObject WinText;
 
+	void Awake()
+	{
+		GameObject grid = GameObject.Find("GridManager");
+		LogoutScript logoutScript = grid.GetComponent<LogoutScript>();
+	}
 	// Update is called once per frame
 	void Update()
 	{
@@ -37,6 +43,9 @@ public class WinLoseUIScript : MonoBehaviour
 
 	public void NotPlay()
 	{
+		LogoutScript.instance.Logout();
 		Application.Quit();
 	}
+
+    
 }
