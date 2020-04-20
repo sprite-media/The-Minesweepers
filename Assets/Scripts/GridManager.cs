@@ -41,7 +41,6 @@ public class GridManager : MonoBehaviour
 	private int width;
 	private int height;
 	public int numOfMines { get; private set; }
-	private int numOfHiddenOrFlag;
 
 	private void Awake()
 	{
@@ -61,15 +60,18 @@ public class GridManager : MonoBehaviour
 		{
 			cellTextures.Add(Resources.Load("Textures/" + ((Cell.Status)i).ToString(), typeof(Texture2D)) as Texture2D);
 		}
+		if (clientSide)
+			return;
 
 		SetDifficulty();
 		SetGrid();
-
-		if (!clientSide)
-		{
-			SetMines();
-			ForEachCell(CheckTheSurroundingCells);
-		}
+		SetMines();
+		ForEachCell(CheckTheSurroundingCells);
+	}
+	public void StartGrid()
+	{
+		SetDifficulty();
+		SetGrid();
 	}
 
 	//Loops through all the cells and do something with the cell

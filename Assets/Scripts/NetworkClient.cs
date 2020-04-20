@@ -17,6 +17,8 @@ public class NetworkClient : MonoBehaviour
 
 	public int ID { get; private set; }
 
+	private bool start = false;
+
 	private void Awake()
 	{
 		if (instance == null)
@@ -27,7 +29,10 @@ public class NetworkClient : MonoBehaviour
 		{
 			Destroy(this);
 		}
+	}
 
+	public void StartNetwork()
+	{
 		m_Driver = NetworkDriver.Create();
 		m_Connection = default(NetworkConnection);
 
@@ -35,9 +40,13 @@ public class NetworkClient : MonoBehaviour
 		m_Connection = m_Driver.Connect(endpoint);
 
 		InvokeRepeating("SendHeartbeat", 1, 1.0f / 60.0f);
+		start = true;
 	}
 	private void Update()
 	{
+		if (!start)
+			return;
+
 		m_Driver.ScheduleUpdate().Complete();
 
 		if (!m_Connection.IsCreated)
