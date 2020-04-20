@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 	//will be used for other players
 	public Player player { get; private set; }//own player
 
+	public UIManager ui;
+
 	private void Awake()
 	{
 		if (instance == null)
@@ -26,20 +28,15 @@ public class GameManager : MonoBehaviour
 	{
 		NetworkClient.instance.SendInput(index, 0);
 		Turn(false);
-		//TODO tell server click on grid[index]
-		//TODO at server side GridManager.instance.ClickAt(index);
-		//TODO at server side GridManager.instance.CheckGrid();
 	}
 	public void FlagRequest(Vector2Int index)
 	{
 		NetworkClient.instance.SendInput(index, 1);
 		Turn(false);
-		//TODO tell server flag on grid[index]
-		//TODO at server side GridManager.instance.FlagAt(index);
-		//TODO at server side GridManager.instance.CheckGrid();
 	}
 	public void Turn(bool turn)// Will be called at Client OnData Result case / depend on result(valid click or not)
 	{
 		player.Turn(turn);
+		ui.ChangeStatus(turn);
 	}
 }
