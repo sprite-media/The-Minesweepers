@@ -46,9 +46,16 @@ public class LoginScript : MonoBehaviour
         {
             Debug.Log(www.downloadHandler.text);
             MsgText = www.downloadHandler.text;
-            if (MsgText == "\"Invalid password\"" || MsgText == "\"Invalid username\"") {
+            if (MsgText == "\"Invalid password\"" || MsgText == "\"Invalid username\"") 
+            {
                 OutputText.GetComponent<TextMeshProUGUI>().text = MsgText;
                 OutputText.SetActive(true);
+            }
+            if (MsgText == "\"Login\"")
+            {
+                login = true;
+                Debug.Log("Start Game");
+                // Add start game code here
             }
         }
 

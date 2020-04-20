@@ -6,17 +6,12 @@ using UnityEngine.Networking;
 
 public class SignUpScript : MonoBehaviour
 {
-    public GameObject loginBtn;
-    public GameObject signupBtn1;
-    public GameObject signupBtn2;
-
-    public GameObject loginText;
     public GameObject welcomeText;
-    public GameObject checkPwInput;
     public GameObject checkPwInputField;
     public GameObject idInputField;
     public GameObject pwInputField;
     public GameObject loginUI;
+    public GameObject signupUI;
     public GameObject MsgUI;
 
     string idInputText;
@@ -34,15 +29,13 @@ public class SignUpScript : MonoBehaviour
 
     public void SignUp()
     {
-        loginBtn.SetActive(false);
-        signupBtn1.SetActive(false);
-        signupBtn2.SetActive(true);
-        loginText.GetComponent<TextMeshProUGUI>().text = "Sign Up";
-        checkPwInput.SetActive(true);
+        loginUI.SetActive(false);
+        signupUI.SetActive(true);
     }
 
     public void NewUser() 
     {
+        Debug.Log("Signupfor user");
         StartCoroutine(SentUserInfo());
     }
     // Update is called once per frame
@@ -56,9 +49,11 @@ public class SignUpScript : MonoBehaviour
         idInputText = idInputField.GetComponent<TextMeshProUGUI>().text;
         pwInputText = pwInputField.GetComponent<TextMeshProUGUI>().text;
         checkPwInputText = checkPwInputField.GetComponent<TextMeshProUGUI>().text;
+        Debug.Log("123");
 
         if (checkPwInputText == pwInputText)
         {
+            Debug.Log("456");
             string jsonString = "{\"username\":\"" + idInputText + "\",\"password\":\"" + pwInputText + "\"}";
 
             byte[] myData = System.Text.Encoding.UTF8.GetBytes(jsonString);
@@ -89,18 +84,14 @@ public class SignUpScript : MonoBehaviour
     {
         welcomeText.GetComponent<TextMeshProUGUI>().text = "Welcome " + idInputText + " to Minesweeper! \r\n Please login to play!";
         loginUI.SetActive(false);
+        signupUI.SetActive(false);
         MsgUI.SetActive(true);
     }
 
     public void DisplayLoginUI() 
     {
-        loginBtn.SetActive(true);
-        signupBtn1.SetActive(true);
-        signupBtn2.SetActive(false);
-        loginText.GetComponent<TextMeshProUGUI>().text = "Login";
-        checkPwInput.SetActive(false);
-
         loginUI.SetActive(true);
+        signupUI.SetActive(false);
         MsgUI.SetActive(false);
 
     }
