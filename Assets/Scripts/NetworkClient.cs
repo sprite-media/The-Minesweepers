@@ -46,16 +46,16 @@ public class NetworkClient : MonoBehaviour
 	{
 		if(Input.GetKeyDown(KeyCode.Escape))
 			LogoutScript.instance.Logout();
-		if (Input.GetKeyDown(KeyCode.W))
-		{
-			ProgressScript.instance.setProgress(1);
-			ProgressScript.instance.UpdateProgress();
-		}
-		if (Input.GetKeyDown(KeyCode.L))
-		{
-			ProgressScript.instance.setProgress(-1);
-			ProgressScript.instance.UpdateProgress();
-		}
+		//if (Input.GetKeyDown(KeyCode.W))
+		//{
+		//	//ProgressScript.instance.setProgress(1);
+		//	//ProgressScript.instance.UpdateProgress();
+		//}
+		//if (Input.GetKeyDown(KeyCode.L))
+		//{
+		//	ProgressScript.instance.setProgress(-1);
+		//	ProgressScript.instance.UpdateProgress();
+		//}
 		if (!start)
 			return;
 
