@@ -41,7 +41,7 @@ public class WinLoseUIScript : MonoBehaviour
 			WinText.SetActive(true);
 			WinText.transform.parent.gameObject.SetActive(true);
 			WinLoseUI.SetActive(true);
-			if (doOnce == true)
+			if (doOnce == false)
 			{
 				ProgressScript.instance.setProgress(1);
 				ProgressScript.instance.UpdateProgress();
