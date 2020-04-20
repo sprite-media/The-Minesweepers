@@ -6,15 +6,26 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
+	public static UIManager instance { get; private set; }
 	public Sprite ThinkingImg;
 	public Sprite SleepingImg;
 	public GameObject[] PlayerObject;
 	public GameObject[] TextObject;
 
 	private Image[] Img;
+	public Image[] PlayerBackground;
 
 	private void Awake()
 	{
+		if (instance == null)
+		{
+			instance = this;
+		}
+		else
+		{
+			Destroy(this);
+		}
+
 		Img = new Image[2];
 		Img[0] = PlayerObject[0].GetComponent<Image>();
 		Img[1] = PlayerObject[1].GetComponent<Image>();
@@ -39,5 +50,10 @@ public class UIManager : MonoBehaviour
 			Img[NetworkClient.instance.ID].sprite = SleepingImg;
 			TextObject[NetworkClient.instance.ID].GetComponent<TextMeshProUGUI>().text = "Waiting...";
 		}
+	}
+	public void ChangeBackground(int id)
+	{
+		Debug.Log("Changing");
+		PlayerBackground[id].color = Color.cyan;
 	}
 }

@@ -113,6 +113,7 @@ public class NetworkClient : MonoBehaviour
 				case Command.Connect:
 					ConnectInfo connectInfo = JsonUtility.FromJson<ConnectInfo>(returnData);
 					ID = connectInfo.playerID;
+					UIManager.instance.ChangeBackground(ID);
 					Debug.Log(ID);
 					break;
 				case Command.Drop:

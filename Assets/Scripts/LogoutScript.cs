@@ -24,11 +24,6 @@ public class LogoutScript : MonoBehaviour
     {
         StartCoroutine(SentLogoutInfo());
     }
-
-    void OnDestroy()
-    {
-        Logout();
-    }
     IEnumerator SentLogoutInfo()
     {
         string jsonString = "{\"username\":\"" + userid + "\"}";

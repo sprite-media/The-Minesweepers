@@ -5400,6 +5400,9 @@ MonoBehaviour:
   TextObject:
   - {fileID: 633794816}
   - {fileID: 32924578}
+  PlayerBackground:
+  - {fileID: 120193747}
+  - {fileID: 1534640702}
 --- !u!1 &1394179952
 GameObject:
   m_ObjectHideFlags: 0
