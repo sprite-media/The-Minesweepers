@@ -26,6 +26,7 @@ public class WinLoseUIScript : MonoBehaviour
 			GameOverText.transform.parent.gameObject.SetActive(true);
 			WinLoseUI.SetActive(true);
 			ProgressScript.instance.setProgress(-1);
+			ProgressScript.instance.UpdateProgress();
 		}
 		if (GridManager.instance.isWin)
 		{
@@ -35,6 +36,7 @@ public class WinLoseUIScript : MonoBehaviour
 			WinText.transform.parent.gameObject.SetActive(true);
 			WinLoseUI.SetActive(true);
 			ProgressScript.instance.setProgress(1);
+			ProgressScript.instance.UpdateProgress();
 		}
 
 	}

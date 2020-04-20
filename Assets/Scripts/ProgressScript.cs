@@ -8,7 +8,7 @@ public class ProgressScript : MonoBehaviour
 
     public static ProgressScript instance { get; private set; }
 
-    int progress;
+    int progress = 0;
     string userid;
     // Start is called before the first frame update
     void Awake()
@@ -21,14 +21,14 @@ public class ProgressScript : MonoBehaviour
 
     public void setUserid(string id) { userid = id; }
 
-    public void setProgress(int x) { progress += x; }
+    public void setProgress(int x) { progress = 0; progress += x; }
 
     public void UpdateProgress()
     {
-        StartCoroutine(SentLogoutInfo());
+        StartCoroutine(SentProgressInfo());
     }
 
-    IEnumerator SentLogoutInfo()
+    IEnumerator SentProgressInfo()
     {
         string jsonString = "{\"username\":\"" + userid + "\",\"progress\":\"" + progress + "\"}";
 
