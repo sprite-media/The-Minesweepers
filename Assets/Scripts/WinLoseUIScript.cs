@@ -15,17 +15,17 @@ public class WinLoseUIScript : MonoBehaviour
 		if (GridManager.instance.isLose)
 		{
 			GameManager.instance.player.Turn(false);
-			Time.timeScale = 0.0f;
 			GameOverText.SetActive(true);
 			WinText.SetActive(false);
+			GameOverText.transform.parent.gameObject.SetActive(true);
 			WinLoseUI.SetActive(true);
 		}
 		if (GridManager.instance.isWin)
 		{
 			GameManager.instance.player.Turn(false);
-			Time.timeScale = 0.0f;
 			GameOverText.SetActive(false);
 			WinText.SetActive(true);
+			WinText.transform.parent.gameObject.SetActive(true);
 			WinLoseUI.SetActive(true);
 		}
 

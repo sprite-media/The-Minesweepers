@@ -32,7 +32,6 @@ public class GridManager : MonoBehaviour
 	private delegate void ForAllCell(int x, int y); //Delegate to pass function that controlls cell
 
 	private Cell[,] grid;
-	
 	[HideInInspector]
 	public bool isLose = false;
 	[HideInInspector]

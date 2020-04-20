@@ -111,7 +111,7 @@ public class NetworkClient : MonoBehaviour
 					break;
 				case Command.Chat:
 					Chat chat = JsonUtility.FromJson<Chat>(returnData);
-					chat.chatMessage = chat.RemoveQuestionMark(chat.chatMessage);
+					//chat.chatMessage = chat.RemoveQuestionMark(chat.chatMessage);
 					Debug.Log("Chat " + chat.chatMessage);
 					ChatScript.instance.AddText(chat.chatMessage);
 					break;
@@ -131,6 +131,7 @@ public class NetworkClient : MonoBehaviour
 	private void Disconnect()
 	{
 		Debug.Log("Disconnecting");
+		CancelInvoke();
 		m_Connection.Disconnect(m_Driver);
 	}
 
@@ -141,10 +142,18 @@ public class NetworkClient : MonoBehaviour
 			Debug.Log("Invalid connection");
 			return;
 		}
-		var writer = m_Driver.BeginSend(m_Connection);
-		NativeArray<byte> sendBytes = new NativeArray<byte>(Encoding.ASCII.GetBytes(JsonUtility.ToJson(data)), Allocator.Temp);
-		writer.WriteBytes(sendBytes);
-		m_Driver.EndSend(writer);
+		try
+		{
+			var writer = m_Driver.BeginSend(m_Connection);
+			NativeArray<byte> sendBytes = new NativeArray<byte>(Encoding.ASCII.GetBytes(JsonUtility.ToJson(data)), Allocator.Temp);
+			writer.WriteBytes(sendBytes);
+			m_Driver.EndSend(writer);
+		}
+		catch(System.Exception e)
+		{
+			Debug.LogError(e + "\nDisconnecting.");
+			Disconnect();
+		}
 	}
 	private void SendHeartbeat()
 	{
