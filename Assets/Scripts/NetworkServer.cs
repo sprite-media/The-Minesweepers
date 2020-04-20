@@ -143,8 +143,9 @@ public class NetworkServer : MonoBehaviour
 						break;
 				}
 				SendResult(result);
-				if (result.result[0].status == Cell.Status.MINE)
-					Time.timeScale = 0.0f;
+				if(result.result.Count > 0)
+					if (result.result[0].status == Cell.Status.MINE)
+						Time.timeScale = 0.0f;
 
 				if (validClick)
 					NotifyTurn(((connectionIndex + 1) % 2));

@@ -10,15 +10,19 @@ public class LoginScript : MonoBehaviour
     public string pwInput;
     public bool login;
     string MsgText;
+    public GameObject gameplayCanvas; 
 	public GameObject idInputField;
     public GameObject pwInputField;
     public GameObject OutputText;
 
-	void Start()
+	void Awake()
 	{
-        //Define which player own this client here 
         login = false;
 	}
+    private void Start()
+    {
+        gameplayCanvas.SetActive(false);
+    }
     public void Login()
     {
         StartCoroutine(SentLoginInfo());
@@ -56,11 +60,12 @@ public class LoginScript : MonoBehaviour
                 login = true;
                 Debug.Log("Start Game");
                 // Add start game code here
+                GridManager.instance.StartGrid();
+                NetworkClient.instance.StartNetwork();
+                gameplayCanvas.SetActive(true);
+                gameObject.SetActive(false);
             }
         }
-
-
-
     }
 }
 
