@@ -3,8 +3,6 @@
 //It will communicate with server and affect the game flow(player turn)
 public class GameManager : MonoBehaviour
 {
-	public GameObject UIManager;
-	public UIManager ui;
 	public static GameManager instance { get; private set; }
 	//will be used for other players
 	public Player player { get; private set; }//own player
@@ -15,7 +13,6 @@ public class GameManager : MonoBehaviour
 			instance = this;
 		else
 			Destroy(this);
-		ui = UIManager.GetComponent<UIManager>();
 	}
 
 	public void CreatePlayer()
@@ -44,6 +41,5 @@ public class GameManager : MonoBehaviour
 	public void Turn(bool turn)// Will be called at Client OnData Result case / depend on result(valid click or not)
 	{
 		player.Turn(turn);
-		ui.ChangeStatus(turn);
 	}
 }
