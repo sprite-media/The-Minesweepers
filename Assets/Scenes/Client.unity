@@ -3820,6 +3820,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5745ec749664e94881e241421f70961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UIManager: {fileID: 0}
+  ui: {fileID: 0}
 --- !u!4 &1201824991
 Transform:
   m_ObjectHideFlags: 0
@@ -4129,6 +4131,7 @@ GameObject:
   - component: {fileID: 1383541964}
   - component: {fileID: 1383541966}
   - component: {fileID: 1383541965}
+  - component: {fileID: 1383541967}
   m_Layer: 5
   m_Name: Info&Chat
   m_TagString: Untagged
@@ -4194,6 +4197,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1383541963}
   m_CullTransparentMesh: 0
+--- !u!114 &1383541967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383541963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aab3253f3093d40cf817f015f2aae02f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ThinkingImg: {fileID: 21300000, guid: e18f1a009cb7d324c81b76556dcd8dc5, type: 3}
+  SleepingImg: {fileID: 21300000, guid: 99985f728dca2a44db4d3f566be2e7b9, type: 3}
+  Player1: {fileID: 0}
+  Player2: {fileID: 0}
+  P1Text: {fileID: 0}
+  P2Text: {fileID: 0}
 --- !u!1 &1394179952
 GameObject:
   m_ObjectHideFlags: 0

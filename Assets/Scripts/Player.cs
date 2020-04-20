@@ -71,6 +71,6 @@ public class Player : MonoBehaviour
 	}
 	public void Turn(bool t)
 	{
-		turn = t;
+        
 	}
 }
