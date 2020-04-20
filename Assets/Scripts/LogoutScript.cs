@@ -19,12 +19,6 @@ public class LogoutScript : MonoBehaviour
             Destroy(this);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void setUserId(string id) { userid = id; }
     public void Logout()
     {

@@ -1841,6 +1841,49 @@ MonoBehaviour:
   WinLoseUI: {fileID: 68192820}
   GameOverText: {fileID: 3017263931866455966}
   WinText: {fileID: 3017263931866455965}
+--- !u!1 &489996993
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 489996995}
+  - component: {fileID: 489996994}
+  m_Layer: 0
+  m_Name: Logout
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &489996994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489996993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadd87580d491624eacb1feb61a54812, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &489996995
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489996993}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 561.8062, y: 313.55148, z: -12.031621}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &502556150
 GameObject:
   m_ObjectHideFlags: 0
@@ -3103,7 +3146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1986e6e3d52a7264e81428765c7d6656, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IP: 127.0.0.1
+  IP: 3.209.132.25
   Port: 12345
 --- !u!4 &699921846
 Transform:

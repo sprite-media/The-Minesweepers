@@ -46,7 +46,8 @@ public class NetworkServer : MonoBehaviour
 		m_Driver.ScheduleUpdate().Complete();
 		CleanupConnection();
 
-		timer += Time.deltaTime;
+		if(m_Connections.Length >= 2)
+			timer += Time.deltaTime;
 
 		NetworkConnection c;
 		while ((c = m_Driver.Accept()) != default(NetworkConnection))
