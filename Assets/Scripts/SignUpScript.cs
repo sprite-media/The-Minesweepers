@@ -11,14 +11,19 @@ public class SignUpScript : MonoBehaviour
     public GameObject signupBtn2;
 
     public GameObject loginText;
+    public GameObject welcomeText;
     public GameObject checkPwInput;
     public GameObject checkPwInputField;
     public GameObject idInputField;
     public GameObject pwInputField;
+    public GameObject loginUI;
+    public GameObject MsgUI;
 
     string idInputText;
     string pwInputText;
     string checkPwInputText;
+    string successText;
+    bool signup = false;
 
 
     // Start is called before the first frame update
@@ -29,7 +34,6 @@ public class SignUpScript : MonoBehaviour
 
     public void SignUp()
     {
-    
         loginBtn.SetActive(false);
         signupBtn1.SetActive(false);
         signupBtn2.SetActive(true);
@@ -44,7 +48,7 @@ public class SignUpScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+    
     }
 
     IEnumerator SentUserInfo()
@@ -71,11 +75,33 @@ public class SignUpScript : MonoBehaviour
             }
             else
             {
-                Debug.Log(www.downloadHandler.text);
+                //Debug.Log(www.downloadHandler.text);
+                successText = www.downloadHandler.text;
+                Debug.Log(successText);
+                if (successText == "\"success\"")
+                    Debug.Log("Signup");
+                DisplayWelcomeUI();
             }
-
-
         }
     }
 
+    void DisplayWelcomeUI()
+    {
+        welcomeText.GetComponent<TextMeshProUGUI>().text = "Welcome " + idInputText + " to Minesweeper! \r\n Please login to play!";
+        loginUI.SetActive(false);
+        MsgUI.SetActive(true);
+    }
+
+    public void DisplayLoginUI() 
+    {
+        loginBtn.SetActive(true);
+        signupBtn1.SetActive(true);
+        signupBtn2.SetActive(false);
+        loginText.GetComponent<TextMeshProUGUI>().text = "Login";
+        checkPwInput.SetActive(false);
+
+        loginUI.SetActive(true);
+        MsgUI.SetActive(false);
+
+    }
 }
